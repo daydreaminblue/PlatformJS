@@ -1,0 +1,78 @@
+
+<link rel="stylesheet" href="/resources/styles/panel/course/courseList.css">
+
+<style>
+        .main_wrapper{
+            display: flex !important; 
+            flex-direction: row-reverse !important;
+            position: relative !important;
+        }
+    </style>
+
+
+
+<script>
+            
+    function openOrCloseNav() {
+        if( parseInt(document.getElementById("mySidenav").style.width) > 0 ){
+            document.getElementById("mySidenav").style.width = "0";
+            document.getElementById("myWrapper").style.justifyContent = "center";
+            document.getElementById("myWrapper").style.alignItems = "center";
+        }
+        else{
+            
+            document.getElementById("myWrapper").style.justifyContent = "flex-start";
+            document.getElementById("mySidenav").style.width = "250px";
+            document.getElementById("myWrapper").style.alignItems = "center";
+        }
+    }
+
+</script>
+
+
+<div class="table" id="myTable">
+
+    
+    <div class="table__options">
+        <p>عنوان دوره</p>
+        <p>دسته</p>
+        <p>قیمت</p>
+        <p>عملیات</p>
+    </div>
+
+    
+    <div class="table__no__wrapper">
+
+        <% courses.docs.forEach(course => { %>  
+    
+        <div class="table__no">
+
+            <div class="table__no-name"> 
+                <p><%= course.title %> </p>
+            </div>
+            <div class="table__no-type"><p> <%= course.cateTitle %></p></div>
+            <div class="table__no-price"><p> <%= course.price %> </p></div>
+            <div class="table__no-actions">
+                <form action="/admin/courses/<%= course._id %>?_method=DELETE" method="post">
+                    <div class="buttons">
+                        <a href="/admin/courses/<%= course._id %>/edit"  class="buttons_one">ویرایش</a>
+                        <button type="submit">حذف</button>
+                    </div>
+                </form>
+            </div>
+        
+        </div>
+ 
+        <% }) %>
+
+
+        
+        <%- include(viewPath('layouts/pagination') ,{ pagination : courses}) %>
+
+    </div>
+
+
+
+</div>
+
+

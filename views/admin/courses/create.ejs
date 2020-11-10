@@ -1,0 +1,130 @@
+
+<link rel="stylesheet" href="/resources/styles/panel/course/creating.css">
+
+<style>
+    .parent{
+        flex-basis: 80%;
+    }
+    .container{
+        margin-right: 10em ;
+        margin-left: 10em ;
+    }
+</style>
+
+<script>        
+        function openOrCloseNav() {
+            if( parseInt(document.getElementById("mySidenav").style.width) > 0 ){
+                document.getElementById("mySidenav").style.width = "0";
+                document.getElementById("mySidenav").style.display = "none";
+                document.getElementById("myContainer").style.justifyContent = "center";
+                document.getElementById("myContainer").style.alignItems = "center";
+            }
+            else{
+                document.getElementById("mySidenav").style.width = "250px";
+                document.getElementById("mySidenav").style.display = "flex";
+                document.getElementById("myContainer").style.alignItems = "center";
+            }
+        }
+
+</script>
+
+
+<script>
+            
+    var inputs = document.querySelectorAll('.file-input')
+
+    for (var i = 0, len = inputs.length; i < len; i++) {
+    customInput(inputs[i])
+    }
+
+    function customInput (el) {
+    const fileInput = el.querySelector('[type="file"]')
+    const label = el.querySelector('[data-js-label]')
+
+    fileInput.onchange =
+    fileInput.onmouseout = function () {
+    if (!fileInput.value) return
+
+    var value = fileInput.value.replace(/^.*[\\\/]/, '')
+    el.className += ' -chosen'
+    label.innerText = value
+    }
+    }
+
+</script>
+
+    
+<div class="parent">
+          
+<% let flag = false %>
+<% if(errors.length > 0) { %> 
+    <% flag = true %>
+    <div class="errors_container" id="errorsContainer">
+        <div class="errors_container_content">
+                <% errors.forEach(error => { %>
+                    <%= error %><br>
+                <% }) %>
+        </div>
+    </div>
+<% } %>
+
+    <div class="container"  id="myContainer">
+            
+        <form class="form-horizontal" action="/admin/courses/create" method="post" enctype="multipart/form-data">
+            
+            <div class="container_content">
+    
+                <div class="title"><p> عنوان دوره </p>
+                <input type="text" placeholder="عنوان دوره را وارد کنید" name="title" id="title"  value="<%= old('title') %>" required>
+                </div>
+                
+                <div class="type"><p> دسته بندی </p>
+                    <div class="type_slct">
+                    <select name="category" id="category" > 
+                        <% categories.forEach(cate => { %> 
+                            <option value="<%= cate.id %>"><%= cate.name %></option>                        
+                        <% }) %>
+                    </select>
+                    </div>
+                </div>
+                
+                <div class="images"><p> تصویر </p>
+                    <input type="file" class="form-control" name="images" id="images" placeholder="تصویر را وارد کنید" >              
+                </div>
+    
+                </div>      
+                    <div class="price"><p> قیمت </p>
+                    <input type="text" placeholder="قیمت غذا را وارد کنید" name="price" id="price" value="<%= old('price') %>" required>
+                </div>
+                
+                <div class="body"><p> توضیحات </p>
+                    <textarea name="body" id="body" placeholder="توضیحات را وارد کنید"><%= old('body') %></textarea>
+                </div>
+                    <div class="tags"><p> تگ ها </p>
+                    <input type="text" placeholder="تگ های غذا را وارد کنید" name="tags" id="tags" value="<%= old('tags') %>" required>
+                </div>
+
+                <div class="submit_button">
+                    <button type="submit">ثبت</button>
+                </div>
+    
+            </div>
+    
+        </form>
+    </div>
+    
+
+    
+
+<link rel="stylesheet" href="/css/component-chosen.min.css">
+<script src="/ckeditor/ckeditor.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/chosen/1.8.6/chosen.jquery.min.js"></script>
+<script>
+     CKEDITOR.replace('body' , {
+         filebrowserUploadUrl : '/admin/upload-image'
+     })
+
+    $('.form-control-chosen').chosen({});
+</script>
+            
+        
