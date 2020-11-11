@@ -1,10 +1,20 @@
-const controller = require('./controller')
+const controller = require('../app/http/controllers/controller')
 const passport = require('passport')
 
 class registerController extends controller {
   showRegsitrationForm(req, res) {
     const title = 'صفحه عضویت'
     res.render('home/auth/register', { title })
+  }
+
+  async registerProccess(req, res, next) {
+    let result = await this.validationData(req)
+
+    if (result) {
+      return this.register(req, res, next)
+    }
+
+    return this.back(req, res)
   }
 
   register(req, res, next) {

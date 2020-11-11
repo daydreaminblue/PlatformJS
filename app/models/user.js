@@ -1,7 +1,6 @@
 const mongoose = require('mongoose')
 const Schema = mongoose.Schema
 const bcrypt = require('bcrypt')
-const uniqueString = require('unique-string')
 const mongoosePaginate = require('mongoose-paginate')
 
 const userSchema = Schema(

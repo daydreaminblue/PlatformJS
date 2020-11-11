@@ -3,7 +3,7 @@ const router = express.Router()
 
 // Auth Router
 const authRouter = require('./auth')
-router.use('/auth', authRouter)
+router.use('/auth', redirectIfAuthenticated.handle, authRouter)
 
 // Handle Errors
 router.all('*', errorHandler.error404)
