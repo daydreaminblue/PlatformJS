@@ -129,4 +129,71 @@ $table_opts_ratio_perc : 18% ;
     font-size: .9em;
   }
 
+.right_side {
+    flex-basis: 21%;
+    position: absolute;
+    top: 0;
+    right: 0;
+}
+    #items{
+
+        display: none;
+        align-items: center;
+        justify-content: space-around;
+        max-width: 10em;
+        margin-right: 22em;
+        color: white;
+        font-size: .9em;
+        flex-basis: 12%;
+
+        &_selected_count{    
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffc107;
+            width: 2em;
+            height: 2em;
+            border-radius: 0.2em;
+        }
+        &_to_delete{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: #ffc107;
+            width: 4em;
+            height: 2em;
+            border-radius: 0.2em;
+        }
+    }
+
+
+.checkbox_wrapper{
+    //flex-basis: 5%;
+    margin-bottom: 1.2em;
+}
+
+.buttons{
+display: flex;
+
+    &_one{
+        border-radius: .2em;
+        background: #dc3545;
+        text-decoration: none;
+        color: white;
+        padding: 1em;
+    }
+
+    button{
+        border-radius: .2em;
+        background: #007bff;
+        color: white;
+        padding: 1em;
+        border: none;
+        width: 5em;
+        margin-right: .3em;
+        font-family: sans-serif;
+    }
+}
+
+
 
