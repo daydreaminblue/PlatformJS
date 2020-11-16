@@ -1,0 +1,84 @@
+
+
+    body {
+        background: linear-gradient(15deg, rgb(71, 149, 209) 50%, rgb(0, 110, 184) 50.1%);
+        margin: 0;
+        font-family: irs !important;
+    }
+
+    
+
+
+    .header{
+
+        flex-basis: 60%;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        height: 6em;
+        border-radius: 0.2em;
+        margin-top: 2em;
+        padding: 0 1em;
+        background: #3a539b;
+
+        &_wrapper{
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        &__right_side{
+            flex-basis: 50%;
+            &_items{
+                display: flex;
+                justify-content: space-around;
+                align-items: center;
+                a{
+                    color:white !important;
+                    font-family: sans-serif;
+                    font-size: .9em;
+                    text-decoration: none;
+                    &:hover{
+                        background: white !important;
+                        padding: .4em;
+                        border-radius: .2em;
+                        color:black !important;
+                        text-decoration: none;
+                    }
+                }
+            }
+        }
+
+
+
+        &__logoo_wrapper {
+            display: flex;
+            align-items: center !important;
+            justify-content: space-around;
+            flex-basis: 13%;
+            direction: ltr;
+            flex-basis: 30%;
+        }
+
+        &_logoo{
+            display: flex;
+            justify-content: center !important;
+            align-items: center !important;
+            width: 3em;
+            height: 3em;
+            border: .209em solid white;
+            & p{
+                color: white;
+                font-size: 1em;
+            }
+        }
+
+        &_title{
+            & p{
+                color: white;
+                font-size: 2em;
+                margin-right: 1.2em;
+            }
+        }
+
+    }
