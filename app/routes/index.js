@@ -1,6 +1,10 @@
 const express = require('express')
 const router = express.Router()
 
+// Middlewares
+const redirectIfAuthenticated = require('../http/middleware/redirectIfAuthenticated')
+const errorHandler = require('../http/middleware/errorHandler')
+
 // Auth Router
 const authRouter = require('./auth')
 router.use('/auth', redirectIfAuthenticated.handle, authRouter)
