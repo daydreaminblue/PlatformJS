@@ -1,4 +1,4 @@
-const User = require('../../models/user')
+const User = require('app/models/user')
 const middleware = require('./middleware')
 
 class redirectIfAuthenticated extends middleware {

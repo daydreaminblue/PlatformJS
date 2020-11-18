@@ -8,8 +8,9 @@ const session = require('express-session')
 const mongoose = require('mongoose')
 const flash = require('connect-flash')
 const passport = require('passport')
+const Helpers = require('./helpers')
+const config = require('./../config')
 const methodOverride = require('method-override')
-const config = require('../config')
 
 module.exports = class Application {
   constructor() {
@@ -34,20 +35,33 @@ module.exports = class Application {
   }
 
   setConfig() {
-    require('./passport/passport-local')
+    require('app/passport/passport-local')
+
+    app.use(express.static(config.layout.public_dir))
+    app.set('view engine', config.layout.view_engine)
+    app.set('views', config.layout.view_dir)
+    app.use(config.layout.ejs.expressLayouts)
+    app.set('layout extractScripts', config.layout.ejs.extractScripts)
+    app.set('layout extractStyles', config.layout.ejs.extractStyles)
+    app.set('layout', config.layout.ejs.master)
 
     app.use(bodyParser.json())
     app.use(bodyParser.urlencoded({ extended: true }))
     app.use(methodOverride('_method'))
     app.use(validator())
     app.use(cookieParser())
-    app.use(session({ secret: '123' }))
+    app.use(session({ secret: '123', resave: true, saveUninitialized: true }))
     app.use(flash())
     app.use(passport.initialize())
     app.use(passport.session())
+
+    app.use((req, res, next) => {
+      app.locals = new Helpers(req, res).getObjects()
+      next()
+    })
   }
 
   setRouters() {
-    app.use(require('./routes'))
+    app.use(require('app/routes'))
   }
 }

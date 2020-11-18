@@ -9,8 +9,9 @@ const userSchema = Schema(
     admin: { type: Boolean, default: 0 },
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
+    orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
   },
-  { timestamps: true }
+  { timestamps: true, toJSON: { virtuals: true } }
 )
 
 userSchema.plugin(mongoosePaginate)
@@ -34,5 +35,11 @@ userSchema.pre('findOneAndUpdate', function (next) {
 userSchema.methods.comparePassword = function (password) {
   return bcrypt.compareSync(password, this.password)
 }
+
+userSchema.virtual('courses', {
+  ref: 'Course',
+  localField: '_id',
+  foreignField: 'user',
+})
 
 module.exports = mongoose.model('User', userSchema)

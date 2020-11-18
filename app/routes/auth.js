@@ -3,12 +3,12 @@ const router = express.Router()
 const passport = require('passport')
 
 // Controllers
-const loginController = require('../http/controllers/auth/loginController')
-const registerController = require('../http/controllers/auth/registerController')
+const loginController = require('app/http/controllers/auth/loginController')
+const registerController = require('app/http/controllers/auth/registerController')
 
 // validators
-const registerValidator = require('../http/validators/registerValidator')
-const loginValidator = require('../http/validators/loginValidator')
+const registerValidator = require('app/http/validators/registerValidator')
+const loginValidator = require('app/http/validators/loginValidator')
 
 // Home Routes
 router.get('/login', loginController.showLoginForm)

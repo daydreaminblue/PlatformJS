@@ -1,4 +1,4 @@
-const controller = require('../app/http/controllers/controller')
+const controller = require('../../../../app/http/controllers/controller')
 const passport = require('passport')
 
 class registerController extends controller {
