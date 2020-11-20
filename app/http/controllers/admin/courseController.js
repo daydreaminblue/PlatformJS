@@ -15,9 +15,9 @@ class courseController extends controller {
     }
   }
 
-  async create(req , res) {
-    res.render('admin/courses/create' );        
-}
+  async create(req, res) {
+    res.render('admin/courses/create')
+  }
 
   async store(req, res, next) {
     try {
@@ -82,6 +82,22 @@ class courseController extends controller {
     }
   }
 
+  async destroy(req, res, next) {
+    try {
+      this.isMongoId(req.params.id)
+
+      let course = await Course.findById(req.params.id)
+        .populate('episodes')
+        .exec()
+      if (!course) this.error('چنین دوره ای وجود ندارد', 404)
+
+      course.remove()
+
+      return res.redirect('/admin/courses')
+    } catch (err) {
+      next(err)
+    }
+  }
 }
 
 module.exports = new courseController()
