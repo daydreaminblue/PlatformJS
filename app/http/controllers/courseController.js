@@ -67,7 +67,6 @@ class courseController extends controller {
       .sort({ createdAt: 1 })
       .limit(80)
       .exec()
-
     let theUser = await User.findById(req.user.id)
 
     res.render('home/cart', { orders, theUser, title: 'پنل کاربری' })
