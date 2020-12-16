@@ -1,7 +1,8 @@
-const autoBind = require('auto-bind')
+const autoBind = require('auto-bind');
+
 
 module.exports = class validator {
-  constructor() {
-    autoBind(this)
-  }
+    constructor() {
+        autoBind(this);
+    }
 }

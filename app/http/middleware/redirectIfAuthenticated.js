@@ -1,12 +1,17 @@
-const User = require('app/models/user')
-const middleware = require('./middleware')
+const User = require('app/models/user');
+const middleware = require('./middleware');
 
 class redirectIfAuthenticated extends middleware {
-  handle(req, res, next) {
-    if (req.isAuthenticated()) return res.redirect('/')
+    
+    handle(req , res ,next) {
+        if(req.isAuthenticated())
+            return res.redirect('/')
+    
+        next();
+    }
 
-    next()
-  }
+
 }
 
-module.exports = new redirectIfAuthenticated()
+
+module.exports = new redirectIfAuthenticated();

@@ -8,7 +8,7 @@ class categoryController extends controller {
     async index(req , res) {
         try {
             let page = req.query.page || 1;
-            let categories = await Category.paginate({} , { page , sort : { createdAt : 1 } , limit : 20 , populate : 'parent' });
+            let categories = await Category.paginate({} , { page , sort : { createdAt : -1 } , limit : 20 , populate : 'parent' });
 
             res.render('admin/categories/index',  { title : 'دسته ها' , categories });
         } catch (err) {
