@@ -75,7 +75,7 @@ class courseController extends controller {
         await newOrder.save()
       }
 
-      return this.back(req,res)
+      return this.back(req, res)
     } catch (err) {
       next(err)
     }
@@ -162,6 +162,22 @@ class courseController extends controller {
     }
 
     res.render('home/single', { course, flag, title: course.title })
+  }
+
+  async allTeachers(req, res) {
+    try {
+      let page = req.query.page || 1
+      let teachers = await Teacher.paginate(
+        {},
+        { page, sort: { createdAt: 1 }, limit: 6 }
+      )
+      res.render('home/allteachers', {
+        title: 'همه مدرسان',
+        teachers,
+      })
+    } catch (err) {
+      next(err)
+    }
   }
 }
 
