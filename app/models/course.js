@@ -13,6 +13,7 @@ const courseSchema = Schema(
     price: { type: String, required: true },
     images: { type: Object, required: true },
     thumb: { type: String, required: true },
+    video: { type: Object, required: false },
     time: { type: String, default: '00:00:00' },
     viewCount: { type: Number, default: 0 },
     likeCount: { type: Number, default: 0 },
