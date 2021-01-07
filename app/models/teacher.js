@@ -5,7 +5,12 @@ const mongoosePaginate = require('mongoose-paginate')
 const teacherSchema = Schema(
   {
     user: { type: Schema.Types.ObjectId, ref: 'User' },
-    accesses: [{ type: String }],
+    status: { type: Object, default: 'wait' },
+    field: { type: String, required: true },
+    college: { type: String, required: true },
+    resume: { type: Object, required: true },
+    salesCount: { type: Number, default: 0 },
+    wallet: { type: Number, default: 0 },
   },
   { timestamps: true, toJSON: { virtuals: true } }
 )

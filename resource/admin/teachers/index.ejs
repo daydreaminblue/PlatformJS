@@ -1,0 +1,54 @@
+<div style="display: flex; margin-right: 9em">
+  <a href="/admin/teachers/approved" class="btn btn-sm btn-primary"
+    >مدرس های بررسی نشده</a
+  >
+</div>
+
+<link rel="stylesheet" href="/resources/styles/panel/course/courseList.css" />
+
+<style>
+  body {
+    background-color: #2e4051 !important;
+  }
+  .right_side {
+    position: sticky;
+  }
+  .left_side {
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<div class="left_side" style="padding: 0">
+  <div class="table" id="myTable">
+    <div class="table__options">
+      <p>نام درخواست کننده</p>
+      <p>وضعیت</p>
+      <p>عملیات</p>
+    </div>
+
+    <div class="table__no__wrapper">
+      <% let teacherStatus = null %> <% teachers.forEach(teacher => { %>
+
+      <div class="table__no">
+        <p><%= teacher.user.name %></p>
+        <% if (teacher.status == 'wait') teacherStatus = 'در حال بررسی' %> <% if
+        (teacher.status == 'accepted') teacherStatus = 'پذیرفته شده' %> <% if
+        (teacher.status == 'denied') teacherStatus = 'رد شده' %>
+        <p><%= teacherStatus %></p>
+
+        <div class="table__no-actions flexOne">
+          <div class="buttons">
+            <a href="/admin/teachers/<%= teacher._id %>" class="d-flex">
+              <button type="submit" class="buttons_two">بازبینی</button>
+            </a>
+          </div>
+        </div>
+      </div>
+
+      <% }) %>
+    </div>
+
+    <%- include(viewPath('layouts/pagination') ,{ pagination : teachersAlt}) %>
+  </div>
+</div>

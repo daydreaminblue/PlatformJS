@@ -1,0 +1,49 @@
+<title><%= title %></title>
+<style>
+  .fill-section-secondary {
+    fill: #3752a3 !important;
+  }
+</style>
+
+<body>
+  <% let count = 1 %>
+  <section class="slice slice-lg pt-lg-6 pb-0 pb-lg-6 bg-section-secondary">
+    <!-- Container -->
+    <div class="container position-relative zi-100">
+      <div class="col">
+        <div class="row justify-content-center">
+          <div class="col-md-10 text-center">
+            <div class="mt-4 mb-6">
+              <h2 class="h1 text-white">بوک مارک های شما</h2>
+              <h4 class="text-white mt-3">
+                تعداد بوک مارک ها : <%= courses.length %>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <% courses.forEach(course => { %>
+      <div class="episode">
+        <div class="enhanced-row flexOne">
+          <div>
+            <div
+              class="icon icon-shape rounded-circle bg-warning text-white mr-4"
+              style="width: 4rem; height: 4rem"
+            >
+              <p class="mt-0 mb-0"><%= count %></p>
+            </div>
+          </div>
+          <div class="mr-4 d-flex flex-column flexOne tar">
+            <a href="<%= course.path() %>">
+              <p class="lead text-muted mt-0 mb-0"><%= course.title %></p></a
+            >
+          </div>
+        </div>
+      </div>
+
+      <% count = count + 1 %> <% }) %> <%-
+      include(viewPath('layouts/pagination') ,{ pagination : courses}) %>
+    </div>
+  </section>
+</body>

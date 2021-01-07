@@ -3,7 +3,6 @@ const middleware = require('./middleware')
 
 class convertFileToField extends middleware {
   handleImages(req, res, next) {
-    console.log(req.file)
     if (!req.file) req.body.images = undefined
     else req.body.images = req.file.filename
 
@@ -11,9 +10,15 @@ class convertFileToField extends middleware {
   }
 
   handleVideo(req, res, next) {
-    console.log(req.file)
     if (!req.file) req.body.video = undefined
     else req.body.video = req.file.filename
+
+    next()
+  }
+
+  handleResume(req, res, next) {
+    if (!req.file) req.body.resume = undefined
+    else req.body.resume = req.file.filename
 
     next()
   }

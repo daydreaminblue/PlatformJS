@@ -7,9 +7,10 @@ const episodeSchema = Schema(
   {
     course: { type: Schema.Types.ObjectId, ref: 'Course' },
     title: { type: String, required: true },
+    slug: { type: String, required: true },
     body: { type: String, required: true },
     isFree: { type: Boolean, default: false },
-    videoUrl: { type: String, required: true },
+    video: { type: Object, required: true },
   },
   { timestamps: true }
 )
@@ -38,7 +39,7 @@ episodeSchema.methods.download = function (req) {
   return status ? `/download/${this.id}?mac=${hash}&t=${timestamps}` : '#'
 }
 
-episodeSchema.methods.path = function () {
-  return `${this.course.path()}/${this.number}`
+episodeSchema.methods.path = function (coursePath) {
+  return `${coursePath}/${this.slug}`
 }
 module.exports = mongoose.model('Episode', episodeSchema)

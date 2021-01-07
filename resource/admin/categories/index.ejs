@@ -1,0 +1,52 @@
+<link rel="stylesheet" href="/resources/styles/panel/course/courseList.css" />
+
+<style>
+  body {
+    background-color: #2e4051 !important;
+  }
+  .right_side {
+    position: sticky;
+  }
+  .left_side {
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<div class="left_side" style="padding: 0">
+  <div class="table" id="myTable">
+    <div class="table__options">
+      <p>نام دسته</p>
+      <p>نوع</p>
+      <p>عملیات</p>
+    </div>
+
+    <div class="table__no__wrapper">
+      <% categories.docs.forEach(category => { %>
+
+      <div class="table__no">
+        <p><%= category.name %></p>
+        <p><%= category.parent ? category.parent.name : 'دسته اصلی' %></p>
+        <div class="table__no-actions flexOne">
+          <form
+            action="/admin/categories/<%= category.id %>?_method=DELETE"
+            method="post"
+          >
+            <div class="buttons">
+              <a
+                href="/admin/categories/<%= category.id %>/edit"
+                class="buttons_two"
+                >ویرایش</a
+              >
+              <button type="submit" class="buttons_one">حذف</button>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <% }) %>
+    </div>
+
+    <%- include(viewPath('layouts/pagination') ,{ pagination : categories}) %>
+  </div>
+</div>

@@ -2,6 +2,7 @@ const controller = require('app/http/controllers/controller')
 const Course = require('app/models/course')
 const Category = require('app/models/category')
 const Order = require('app/models/order')
+const Episode = require('app/models/episode')
 const fs = require('fs')
 const path = require('path')
 const sharp = require('sharp')
@@ -12,7 +13,7 @@ class courseController extends controller {
       let page = req.query.page || 1
       let courses = await Course.paginate(
         {},
-        { page, sort: { createdAt: -1 }, limit: 2 }
+        { page, sort: { createdAt: -1 }, limit: 5 ,populate : 'user' }
       )
 
       let cateTemp
@@ -24,6 +25,24 @@ class courseController extends controller {
       }
 
       res.render('admin/courses/index', { title: 'دوره ها', courses })
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async courseEpisodes(req, res) {
+    try {
+      let course = await Course.findById(req.params.id)
+      let episodes = await Episode.find()
+      let episodesTemp = []
+      for (let i = 0; i < episodes.length; i++)
+        if (episodes[i].course == req.params.id) episodesTemp.push(episodes[i])
+
+      res.render('admin/courses/courseEpisodes', {
+        title: ' ویدیو های درس' + course.title,
+        course,
+        episodes: episodesTemp,
+      })
     } catch (err) {
       next(err)
     }
@@ -48,6 +67,7 @@ class courseController extends controller {
 
       let newCourse = new Course({
         user: req.user._id,
+        teacher: req.user._id,
         category,
         title,
         slug: this.slug(title),
@@ -61,10 +81,58 @@ class courseController extends controller {
       await newCourse.save()
 
       await Category.findByIdAndUpdate(newCourse.category, {
-        $push: { coursess: newCourse._id },
+        $push: { courses: newCourse._id },
       })
 
       return res.redirect('/admin/courses')
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async createVideo(req, res, next) {
+    try {
+      this.isMongoId(req.params.id)
+
+      let course = await Course.findById(req.params.id)
+      if (!course) this.error('چنین دوره ای وجود ندارد', 404)
+
+      return res.render('admin/courses/video-create', { course })
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async storeVideo(req, res, next) {
+    try {
+      let status = await this.validationData(req)
+      if (!status) {
+        if (req.file) fs.unlinkSync(req.file.path)
+        return this.back(req, res)
+      }
+
+      const video = this.getUrlVideo(req.file)
+
+      delete req.body.video
+
+      await Course.findByIdAndUpdate(req.params.id, {
+        $set: { video },
+      })
+
+      return res.redirect('/admin/courses')
+    } catch (err) {
+      next(err)
+    }
+  }
+
+  async editVideo(req, res, next) {
+    try {
+      this.isMongoId(req.params.id)
+
+      let course = await Course.findById(req.params.id)
+      if (!course) this.error('چنین دوره ای وجود ندارد', 404)
+
+      return res.render('admin/courses/video-edit', { course })
     } catch (err) {
       next(err)
     }

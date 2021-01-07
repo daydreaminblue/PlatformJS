@@ -1,0 +1,161 @@
+<style>
+  body {
+    background-color: #2e4051 !important;
+  }
+  .right_side {
+    position: fixed;
+  }
+</style>
+
+<div class="left_side" style="padding: 0">
+  <div class="container d-flex flex-column">
+    <div class="row align-items-center justify-content-center min-vh-100">
+      <div class="col-md-6 col-lg-5 col-xl-5 py-6 py-md-0">
+        <div
+          class="card shadow zindex-100 mb-0"
+          style="
+            width: 40em;
+            margin-left: 34em;
+            background-color: #24252a;
+            box-shadow: 0 0 1.25rem #24252a;
+            border: 0;
+          "
+        >
+          <div class="card-body px-md-5 py-5">
+            <div class="mb-1">
+              <h6 class="h3 tar wheat">بررسی وضعیت متقاضی</h6>
+            </div>
+            <div class="mb-2">
+              <% let flag = false %> <% if(errors.length > 0) { %> <% flag =
+              true %>
+              <h6 class="h3 tar">خطا</h6>
+              <p class="text-muted mb-0 tar">
+                <% errors.forEach(error => { %> <%= error %><br />
+                <% }) %>
+              </p>
+              <% } %>
+            </div>
+            <span class="clearfix"></span>
+            <div class="form-group tar">
+              <label class="form-control-label">نام</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i data-feather="user"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control tar"
+                  name="name"
+                  value="<%= teacher.user.name %>"
+                  readonly
+                />
+              </div>
+            </div>
+
+            <div class="form-group tar">
+              <label class="form-control-label">ایمیل</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i data-feather="mail"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control tar"
+                  name="email"
+                  value="<%= teacher.user.email %>"
+                  readonly
+                />
+              </div>
+            </div>
+            <div class="form-group tar">
+              <label class="form-control-label">رشته تحصیلی</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i data-feather="book"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control tar"
+                  name="field"
+                  value="<%= teacher.field %>"
+                  readonly
+                />
+              </div>
+            </div>
+            <!--  -->
+            <div class="form-group tar">
+              <label class="form-control-label">دانشگاه</label>
+              <div class="input-group">
+                <div class="input-group-prepend">
+                  <span class="input-group-text"
+                    ><i data-feather="briefcase"></i
+                  ></span>
+                </div>
+                <input
+                  class="form-control tar"
+                  value="<%= teacher.college %>"
+                  name="college"
+                  readonly
+                />
+              </div>
+            </div>
+
+            <div class="form-group tar">
+              <label class="form-control-label tar w100 mb-4">رزومه</label>
+              <div class="input-group flex-row">
+                <% if(resumeType == 'image'){ %>
+                <figure class="w-100 h-50 d-flex justify-content-center">
+                  <img
+                    alt="<%= teacher.resume %>"
+                    src="<%= teacher.resume %>"
+                    class="img-fluid mw-md-120"
+                  />
+                </figure>
+                <a
+                  href="<%= teacher.resume %>"
+                  class="btn btn-secondary btn-iconv mt-4 mb-4"
+                  target="_blank"
+                >
+                  <span class="btn-inner--text">مشاهده رزومه با سایز کامل</span>
+                </a>
+                <% } %> <% if(resumeType == 'document'){ %>
+                <a
+                  href="<%= teacher.resume %>"
+                  class="btn btn-secondary btn-icon mb-4"
+                  target="_blank"
+                >
+                  <span class="btn-inner--text">دانلود رزومه</span>
+                </a>
+                <% } %>
+              </div>
+
+              <div class="d-flex justify-content-between">
+                <form
+                  class="form-horizontal"
+                  method="POST"
+                  action="/admin/teachers/<%= teacher._id %>/approved?_method=put"
+                >
+                  <button type="submit" class="btn btn-block btn-primary">
+                    پذیرش
+                  </button>
+                </form>
+                <form
+                  class="form-horizontal"
+                  method="POST"
+                  action="/admin/teachers/<%= teacher._id %>/denied?_method=put"
+                >
+                  <button type="submit" class="btn btn-block btn-danger">
+                    رد
+                  </button>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,64 @@
+<link rel="stylesheet" href="/resources/styles/panel/course/courseList.css" />
+
+<style>
+  body {
+    background-color: #2e4051 !important;
+  }
+  .right_side {
+    position: sticky;
+  }
+  .left_side {
+    align-items: center;
+    justify-content: center;
+  }
+</style>
+
+<div class="left_side" style="padding: 0">
+  <div class="inOneLook d-flex flexOne justify-content-center mt-10">
+    <div class="inOneLook__blocks" style="flex-basis: 30%">
+      <div class="inOneLook__blocks__mark inOneLook__blocks__mark__one">1</div>
+
+      <div class="inOneLook__context_wrapper flexOne justify-content-around">
+        <div class="inOneLook__blocks_icon">
+          <img src="../resources/images/05.png" />
+        </div>
+        <div class="inOneLook__blocks_p_wrapper">
+          <div class="inOneLook__blocks_title"><p>تعداد فروش ها</p></div>
+          <div class="inOneLook__blocks_counter">
+            <p><%= ordersAlt.total %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inOneLook__blocks" style="flex-basis: 30%">
+      <div class="inOneLook__blocks__mark inOneLook__blocks__mark__two">2</div>
+      <div class="inOneLook__context_wrapper flexOne justify-content-around">
+        <div class="inOneLook__blocks_icon">
+          <img src="../resources/images/01.png" />
+        </div>
+        <div class="inOneLook__blocks_p_wrapper">
+          <div class="inOneLook__blocks_title"><p>میزان فروش کلی</p></div>
+          <div class="inOneLook__blocks_counter">
+            <p><%= totalIncoming %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="inOneLook__blocks" style="flex-basis: 30%">
+      <div class="inOneLook__blocks__mark btn-primary">3</div>
+      <div class="inOneLook__context_wrapper flexOne justify-content-around">
+        <div class="inOneLook__blocks_icon">
+          <img src="../resources/images/06.png" />
+        </div>
+        <div class="inOneLook__blocks_p_wrapper">
+          <div class="inOneLook__blocks_title"><p>میزان سود کلی</p></div>
+          <div class="inOneLook__blocks_counter">
+            <p><%= totalBenefit %></p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
