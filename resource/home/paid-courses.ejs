@@ -22,14 +22,6 @@
         </div>
       </div>
 
-      <div class="row mb-5 mr-1">
-        <a href="/cart/pay-all">
-          <span class="btn-inner--text btn btn-primary btn-icon"
-            >پرداخت همه</span
-          >
-        </a>
-      </div>
-
       <% orders.forEach(order => { %>
       <div class="episode">
         <div class="enhanced-row" style="flex-basis: 30%">
@@ -51,20 +43,6 @@
               </p></a
             >
           </div>
-        </div>
-        <div class="enhanced-row" style="flex-basis: 20%">
-          <form action="/cart/<%= order._id %>" method="post">
-            <button type="submit" style="border: 0; background: transparent">
-              <span class="btn-inner--text btn btn-primary btn-icon"
-                >پرداخت</span
-              >
-            </button>
-          </form>
-          <form action="/cart/<%= order._id %>?_method=DELETE" method="post">
-            <button type="submit" style="border: 0; background: transparent">
-              <span class="btn-inner--text btn btn-danger btn-icon">حذف</span>
-            </button>
-          </form>
         </div>
       </div>
 

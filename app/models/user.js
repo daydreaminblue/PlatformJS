@@ -12,7 +12,6 @@ const userSchema = Schema(
     email: { type: String, unique: true, required: true },
     password: { type: String, required: true },
     rememberToken: { type: String, default: null },
-    orders: [{ type: Schema.Types.ObjectId, ref: 'Order' }],
     likes: [{ type: Schema.Types.ObjectId, ref: 'Course', default: null }],
     bookmarks: [{ type: Schema.Types.ObjectId, ref: 'Course', default: null }],
   },
@@ -51,11 +50,5 @@ userSchema.methods.setRememberToken = function (res) {
     if (err) console.log(err)
   })
 }
-
-userSchema.virtual('courses', {
-  ref: 'Course',
-  localField: '_id',
-  foreignField: 'user',
-})
 
 module.exports = mongoose.model('User', userSchema)

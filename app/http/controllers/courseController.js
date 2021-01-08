@@ -2,7 +2,6 @@ const controller = require('app/http/controllers/controller')
 const Course = require('app/models/course')
 const Episode = require('app/models/episode')
 const User = require('app/models/user')
-const Teacher = require('app/models/teacher')
 const Order = require('app/models/order')
 const Comment = require('app/models/comment')
 
@@ -11,30 +10,18 @@ class courseController extends controller {
     try {
       this.isMongoId(req.params.courseId)
 
-      let theUser = await User.findById(req.user.id)
+      let order = await Order.findOne({
+        user: req.user._id,
+        course: req.params.courseId,
+      })
 
-      let flag = true
-      for (let i = 0; i < theUser.orders.length; i++)
-        if (theUser.orders.includes(req.params.courseId)) flag = false
-
-      if (flag) {
+      if (!order) {
         let newOrder = new Order({
           user: req.user._id,
           course: req.params.courseId,
+          done: false,
         })
         await newOrder.save()
-
-        let course = await Course.findByIdAndUpdate(req.params.courseId, {
-          $inc: { salesCount: 1 },
-        })
-
-        let share = 0.4 * Number(course.price)
-        await Teacher.findOneAndUpdate(
-          { user: course.user },
-          {
-            $inc: { wallet: share, salesCount: 1 },
-          }
-        )
       }
 
       return this.back(req, res)
@@ -139,62 +126,48 @@ class courseController extends controller {
         },
       ])
 
-    let flag = false
-
+    let inCartFlag, buyFlag
     if (req.user) {
-      let theUser = await User.findById(req.user.id)
-
-      let orders = await Order.find({ user: req.user.id })
-        .populate([
-          {
-            path: 'user',
-            select: 'name',
-          },
-        ])
-        .sort({ createdAt: 1 })
-        .limit(80)
-        .exec()
-
-      for (let i = 0; i < orders.length; i++) {
-        if (orders[i].user._id.equals(theUser._id)) {
-          if (orders[i].course._id.equals(course._id)) {
-            flag = true
-          }
-        }
-      }
+      let order = await Order.findOne({
+        user: req.user._id,
+        course: course._id,
+      })
+      inCartFlag = order ? true : false
+      buyFlag = order && order.done ? true : false
     }
 
     let targetEpisode
-    if (req.params.episode) {
+    if (req.params.episode)
       targetEpisode = await Episode.findOne({ slug: req.params.episode })
+
+    let likeFlag, bookmarkFlag, teacherFlag, user
+    if (req.user) {
+      user = await User.findById(req.user._id)
+
+      for (let i = 0; i < user.likes.length; i++)
+        if (user.likes[i]._id.equals(course._id)) {
+          likeFlag = true
+          break
+        }
+      for (let i = 0; i < user.bookmarks.length; i++)
+        if (user.bookmarks[i]._id.equals(course._id)) {
+          bookmarkFlag = true
+          break
+        }
+
+      teacherFlag = req.user._id.equals(course.user._id)
     }
-
-    const user = await User.findById(req.user._id)
-    let likeFlag = false
-    let bookmarkFlag = false
-    for (let i = 0; i < user.likes.length; i++)
-      if (user.likes[i]._id.equals(course._id)) {
-        likeFlag = true
-        break
-      }
-    for (let i = 0; i < user.bookmarks.length; i++)
-      if (user.bookmarks[i]._id.equals(course._id)) {
-        bookmarkFlag = true
-        break
-      }
-
-    let teacherFlag = req.user._id.equals(course.user._id)
-    console.log(req.user._id.equals(course.user._id))
 
     res.render('home/single', {
       course,
-      flag,
-      title: course.title,
       targetEpisode,
       user,
+      inCartFlag,
+      buyFlag,
       likeFlag,
       bookmarkFlag,
       teacherFlag,
+      title: course.title,
     })
   }
   async comment(req, res, next) {
@@ -214,7 +187,6 @@ class courseController extends controller {
       next(err)
     }
   }
-
 
   async payment(req, res, next) {
     try {

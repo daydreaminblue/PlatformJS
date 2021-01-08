@@ -99,22 +99,116 @@ class homeController extends controller {
       .status(200)
       .render('home/panel', { title: 'پنل کاربری', user, teacherStatus })
   }
+
   async showCart(req, res, next) {
     let page = req.query.page || 1
     let orders = await Order.paginate(
-      { user: req.user.id },
+      { user: req.user.id, done: false },
       { page, sort: { createdAt: -1 }, limit: 3, populate: 'course' }
     )
-
-    let theUser = await User.findById(req.user.id)
 
     res.render('home/cart', {
       orders: orders.docs,
       ordersAlt: orders,
-      theUser,
-      title: 'پنل کاربری',
+      title: 'سبد خرید',
     })
   }
+  async paidCourses(req, res, next) {
+    let page = req.query.page || 1
+    let orders = await Order.paginate(
+      { user: req.user.id, done: true },
+      { page, sort: { createdAt: -1 }, limit: 3, populate: 'course' }
+    )
+    res.render('home/paid-courses', {
+      orders: orders.docs,
+      ordersAlt: orders,
+      title: 'دروس خریداری شده',
+    })
+  }
+  async payOrder(req, res, next) {
+    try {
+      let order = await Order.findByIdAndUpdate(req.params.orderId, {
+        done: true,
+      })
+        .populate('course')
+        .exec()
+
+      let course = await Course.findByIdAndUpdate(order.course._id, {
+        $inc: { salesCount: 1 },
+      })
+
+      let share = 0.4 * Number(course.price)
+      await Teacher.findOneAndUpdate(
+        { user: course.user },
+        {
+          $inc: { wallet: share, salesCount: 1 },
+        }
+      )
+
+      return this.back(req, res)
+    } catch (err) {
+      next(err)
+    }
+  }
+  async payOrders(req, res, next) {
+    try {
+      let orders = await Order.find({ user: req.user._id })
+      let courseIdList = []
+      for (let i = 0; i < orders.length; i++)
+        courseIdList.push(orders[i].course)
+
+      await Order.updateMany(
+        { user: req.user._id },
+        {
+          done: true,
+        }
+      )
+
+      let course
+      let courses = []
+      for (let i = 0; i < courseIdList.length; i++) {
+        course = await Course.findOneAndUpdate(
+          { _id: courseIdList[i] },
+          {
+            $inc: { salesCount: 1 },
+          }
+        )
+        courses.push({
+          id: courseIdList[i],
+          price: course.price,
+          teacher: course.user,
+        })
+      }
+
+      let share
+      for (let i = 0; i < courses.length; i++) {
+        share = 0.4 * Number(courses[i].price)
+        await Teacher.findOneAndUpdate(
+          { user: courses[i].teacher },
+          {
+            $inc: { wallet: share, salesCount: 1 },
+          }
+        )
+      }
+
+      return this.back(req, res)
+    } catch (err) {
+      next(err)
+    }
+  }
+  async orderDestroy(req, res, next) {
+    try {
+      this.isMongoId(req.params.orderId)
+
+      let order = await Order.findById(req.params.orderId)
+      order.remove()
+
+      return this.back(req, res)
+    } catch (err) {
+      next(err)
+    }
+  }
+
   async showComments(req, res, next) {
     let page = req.query.page || 1
     let comments = await Comment.paginate(
@@ -167,31 +261,6 @@ class homeController extends controller {
         title: ' درس های بوک مارک شده',
         courses: user.docs[0].bookmarks,
       })
-    } catch (err) {
-      next(err)
-    }
-  }
-  async orderDestroy(req, res, next) {
-    try {
-      this.isMongoId(req.params.id)
-
-      let order = await Order.findById(req.params.id)
-      let courseId = order.course
-      order.remove()
-
-      let course = await Course.findByIdAndUpdate(courseId, {
-        $inc: { salesCount: -1 },
-      })
-
-      let share = -1 * 0.4 * Number(course.price)
-      await Teacher.findOneAndUpdate(
-        { user: course.user },
-        {
-          $inc: { wallet: share, salesCount: -1 },
-        }
-      )
-
-      return this.back(req, res)
     } catch (err) {
       next(err)
     }

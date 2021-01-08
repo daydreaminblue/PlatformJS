@@ -11,16 +11,6 @@
     align-items: center;
     justify-content: center;
   }
-  .table__no p:nth-child(n) {
-    color: white;
-    text-align: center;
-    flex-basis: calc(100% / 4) !important;
-  }
-  .table__options p:nth-child(n) {
-    color: white;
-    text-align: center;
-    flex-basis: calc(100% / 4) !important;
-  }
 </style>
 
 <div class="left_side" style="padding: 0">
@@ -29,7 +19,6 @@
       <p>نام کاربر</p>
       <p>عنوان دوره</p>
       <p>قیمت</p>
-      <p>عملیات</p>
     </div>
 
     <div class="table__no__wrapper">
@@ -39,16 +28,6 @@
         <p><%= order.user.name %></p>
         <p><%= order.course.title %></p>
         <p><%= order.course.price %></p>
-        <div class="table__no-actions flexOne">
-          <form
-            action="/admin/orders/<%= order._id %>?_method=DELETE"
-            method="post"
-          >
-            <div class="buttons">
-              <button type="submit">رد</button>
-            </div>
-          </form>
-        </div>
       </div>
 
       <% }) %>

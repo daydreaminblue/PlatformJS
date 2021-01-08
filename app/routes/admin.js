@@ -35,7 +35,6 @@ router.get('/teacher-report', teacherController.report)
 
 //Admin Watch orders
 router.get('/orders', adminController.showOrderList)
-router.delete('/orders/:id', homeController.orderDestroy)
 
 // Course Routes
 router.get('/courses', courseController.index)

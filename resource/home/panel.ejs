@@ -44,31 +44,43 @@
             <p class="lead text-muted mt-2">ایمیل : <%= user.email %></p>
           </div>
         </div>
-        <div class="enhanced-row" style="flex: 1">
-          <a
-            href="/showComments"
-            class="btn btn-primary btn-icon"
-            target="_blank"
-          >
-            <span class="btn-inner--text">نظرات شما</span>
-          </a>
-          <a href="/cart" class="btn btn-danger btn-icon" target="_blank">
-            <span class="btn-inner--text">سبد خرید</span>
-          </a>
-          <a
-            href="/likes"
-            class="btn bg-section-secondary btn-icon"
-            target="_blank"
-          >
-            <span class="btn-inner--text text-white">پسند ها</span>
-          </a>
-          <a
-            href="/bookmarks"
-            class="btn btn-warning btn-iconn"
-            target="_blank"
-          >
-            <span class="btn-inner--text">بوک مارک ها</span>
-          </a>
+        <div class="flexOne d-flex flex-column" style="height: 80%">
+          <div class="enhanced-row" style="flex: 1">
+            <a
+              href="/showComments"
+              class="btn btn-primary btn-icon"
+              target="_blank"
+            >
+              <span class="btn-inner--text">نظرات شما</span>
+            </a>
+            <a href="/cart" class="btn btn-danger btn-icon" target="_blank">
+              <span class="btn-inner--text">سبد خرید</span>
+            </a>
+            <a
+              href="/paid-courses"
+              class="btn bg-section-secondary btn-iconn"
+              target="_blank"
+            >
+              <span class="btn-inner--text text-white">دروس خریداری شده</span>
+            </a>
+          </div>
+          <div class="enhanced-row flexOne d-flex justify-content-between">
+            <a
+              href="/likes"
+              class="btn btn-primary btn-icon mr-4"
+              target="_blank"
+            >
+              <span class="btn-inner--text">پسند ها</span>
+            </a>
+            <a
+              href="/bookmarks"
+              class="btn bg-section-secondary btn-icon"
+              style="margin-left: 2.4rem"
+              target="_blank"
+            >
+              <span class="btn-inner--text text-white">بوک مارک ها</span>
+            </a>
+          </div>
         </div>
       </div>
     </div>
@@ -100,7 +112,7 @@
               شما درخواستی برای مدرس شدن ارسال کرده اید که وضعیت آن در حال حاضر
               به شرح زیر است:
             </p>
-            <p class=" mt-2"><%= teacherStatus %></p>
+            <p class="mt-2"><%= teacherStatus %></p>
           </div>
         </div>
       </div>

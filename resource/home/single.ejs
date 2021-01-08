@@ -1,4 +1,3 @@
-<title><%= title %></title>
 <style>
   .fill-section-secondary {
     fill: #171347 !important;
@@ -166,7 +165,7 @@
           >
             <% if (auth.check) { %>
             <div class="row align-items-center">
-              <% if (likeFlag) { %>
+              <% if (buyFlag) { %> <% if (likeFlag) { %>
               <form
                 action="/courses/<%= course._id %>/like/destroy"
                 method="post"
@@ -201,7 +200,7 @@
                   />
                 </button>
               </form>
-              <% } %>
+              <% } %> <% } %>
               <!--  -->
               <% if (bookmarkFlag) { %>
               <form
@@ -241,7 +240,11 @@
               <% } %>
             </div>
             <div class="row align-items-center">
-              <% if(flag) {%>
+              <% if(!buyFlag && inCartFlag) {%>
+              <p class="lead text-muted mt-0 mb-0 course-details-text">
+                این درس در سبد خرید شما موجود می باشد
+              </p>
+              <% } %> <% if(buyFlag) {%>
               <p class="lead text-muted mt-0 mb-0 course-details-text">
                 شما این درس را خریداری کردید
               </p>
@@ -249,7 +252,7 @@
               <p class="lead text-muted mt-0 mb-0 course-details-text">
                 شما به عنوان مدرس به این درس دسترسی دارید
               </p>
-              <% } else {%>
+              <% } %> <% if(!inCartFlag && !buyFlag && !teacherFlag) {%>
               <form action="/courses/<%= course._id %>" method="post">
                 <button
                   type="submit"
@@ -273,7 +276,7 @@
               class="lead text-muted mt-0 mb-0 course-details-text tar"
               style="width: 100%"
             >
-              برای خرید درس / نمایش اطلاعات بیشتر ورود/ثبت نام کنید.
+              برای خرید درس / نمایش اطلاعات بیشتر ورود / ثبت نام کنید.
             </p>
             <% } %>
           </div>
@@ -317,8 +320,11 @@
       <p class="lead white-color tar" id="courseDescription">
         چکیده : <%= course.body %>
       </p>
-      
-      <div class="bg-gray-dark episode targetEpisode flex-column" id="courseVideo">
+
+      <div
+        class="bg-gray-dark episode targetEpisode flex-column"
+        id="courseVideo"
+      >
         <div class="enhanced-row justify-content-center flexOne">
           <video width="700" controls>
             <source src="<%= course.video %>" type="video/mp4" />
@@ -327,7 +333,7 @@
         </div>
       </div>
 
-      <% if(targetEpisode && (flag || teacherFlag || episode.isFree)) { %>
+      <% if(targetEpisode && (buyFlag || teacherFlag || episode.isFree)) { %>
       <div class="bg-gray-dark episode targetEpisode flex-column">
         <h3 class="lead white-color tar mt-3 mb-4">
           شما ویدیوی قسمت
@@ -354,7 +360,7 @@
               class="icon icon-shape rounded-circle bg-warning text-white mr-4"
               style="width: 4rem; height: 4rem"
             >
-              <% if(flag || teacherFlag || episode.isFree) {%>
+              <% if(buyFlag || teacherFlag || episode.isFree) {%>
               <p class="mt-0 mb-0"><%= count %></p>
               <% } else { %>
               <img
@@ -368,7 +374,7 @@
           </div>
           <div class="mr-4" style="display: flex; justify-content: start">
             <p class="mt-0 mb-0 ml-2"><%= episode.title %></p>
-            <% if(flag || teacherFlag || episode.isFree) { %>
+            <% if(buyFlag || teacherFlag || episode.isFree) { %>
             <a href="<%= episode.path(course.path()) %>">
               <span class="badge badge-dark"> مشاهده </span></a
             >
@@ -376,39 +382,51 @@
           </div>
         </div>
 
+        <% if(auth.check) { %>
         <div
           class="enhanced-row justify-content-between"
           style="flex-basis: 20%"
         >
-          <div onclick="showDescription()">
-            <img
-              alt="down-button"
-              src="/home/assets/img/brand/down-button.png"
-              width="39px"
-              height="39px"
-              class="ml-2"
-            />
-          </div>
-          <% if(flag || teacherFlag || episode.isFree) {%>
-          <a
-            href="<%= episode.video %>"
-            class="btn btn-primary btn-icon"
-            target="_blank"
-          >
-            <span class="btn-inner--text">دانلود</span>
-          </a>
           <% } else { %>
-          <form action="/courses/<%= course._id %>" method="post">
-            <button type="submit" class="btn btn-primary btn-icon">خرید</button>
-          </form>
-          <% } %>
-        </div>
+          <div
+            class="enhanced-row justify-content-around"
+            style="flex-basis: 10%"
+          >
+            <% } %>
+            <div onclick="showDescription()">
+              <img
+                alt="down-button"
+                src="/home/assets/img/brand/down-button.png"
+                width="39px"
+                height="39px"
+                class="ml-2"
+              />
+            </div>
+            <% if(buyFlag || teacherFlag || episode.isFree) {%>
+            <a
+              href="<%= episode.video %>"
+              class="btn btn-primary btn-icon"
+              target="_blank"
+            >
+              <span class="btn-inner--text">دانلود</span>
+            </a>
+            <% } else if(auth.check) { %>
+            <form action="/courses/<%= course._id %>" method="post">
+              <button type="submit" class="btn btn-primary btn-icon">
+                خرید
+              </button>
+            </form>
+            <% } %>
+          </div>
 
-        <div class="description" id="<%= episode._id %>">
-          توضیحات : <%= episode.body %>
+          <div class="description" id="<%= episode._id %>">
+            توضیحات : <%= episode.body %>
+          </div>
+          <% if(auth.check) { %>
         </div>
+        <% } else { %>
       </div>
-      <% count = count + 1 %> <% }) %>
+      <% } %> <% count = count + 1 %> <% }) %>
     </div>
   </section>
   <% } %>

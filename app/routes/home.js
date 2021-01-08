@@ -33,7 +33,10 @@ router.get('/categories/:category', categoryController.index)
 router.get('/panel', homeController.panel)
 //show cart
 router.get('/cart', homeController.showCart)
-router.delete('/cart/:id', homeController.orderDestroy)
+router.get('/paid-courses', homeController.paidCourses)
+router.post('/cart/:orderId', homeController.payOrder)
+router.get('/cart/pay-all', homeController.payOrders)
+router.delete('/cart/:orderId', homeController.orderDestroy)
 //like
 router.post('/courses/:courseId/like', courseController.likeCourse)
 router.post(

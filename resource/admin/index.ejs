@@ -66,7 +66,6 @@
         <p>کاربر</p>
         <p>دوره</p>
         <p>قیمت</p>
-        <p>عملیات</p>
       </div>
 
       <div class="tickets__no__wrapper">
@@ -75,16 +74,6 @@
           <div class="tickets__no-id"><p><%= order.userTitle %></p></div>
           <div class="tickets__no-name"><%= order.courseTitle %></div>
           <div class="tickets__no-price"><%= order.coursePrice %></div>
-          <form
-            action="/admin/orders/<%= order._id %>?_method=DELETE"
-            method="post"
-          >
-            <div class="tickets__no-type">
-              <div class="buttons">
-                <button type="submit">رد</button>
-              </div>
-            </div>
-          </form>
         </div>
 
         <% }) %> <%- include(viewPath('layouts/pagination') ,{ pagination :
