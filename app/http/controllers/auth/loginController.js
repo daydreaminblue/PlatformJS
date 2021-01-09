@@ -3,8 +3,7 @@ const passport = require('passport')
 
 class loginController extends controller {
   showLoginForm(req, res) {
-    const title = 'صفحه ورود'
-    res.render('home/login', { title })
+    res.render('home/auth/login', { title : 'صفحه ورود' })
   }
 
   async loginProccess(req, res, next) {

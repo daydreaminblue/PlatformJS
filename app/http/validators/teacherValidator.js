@@ -12,10 +12,10 @@ class teacherValidator extends validator {
       check('college').not().isEmpty().withMessage('دانشگاه خود را وارد کنید'),
       check('resume').custom(async (value) => {
         if (!value) throw new Error('وارد کردن رزومه الزامی است')
-        let fileExt = ['.pdf', '.png']
+        let fileExt = ['.pdf', '.png', '.jpg']
         if (!fileExt.includes(path.extname(value)))
           throw new Error(
-            'پسوند فایل وارد شده از پسوندهای استاندارد برای ارسال رزومه نیست'
+            'پسوند فایل وارد شده از پسوندهای استاندارد برای ارسال رزومه نیست .pdf, .png, .jpg'
           )
       }),
     ]

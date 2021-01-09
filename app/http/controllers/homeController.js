@@ -8,16 +8,16 @@ const Teacher = require('app/models/teacher')
 
 class homeController extends controller {
   async index(req, res, next) {
-    let categories = await Category.find({})
-    let courseTemp
-    for (let i = 0; i < categories.length; i++) {
-      categories[i].courseArray = []
-      for (let j = categories[i].courses.length - 1; j >= 0; j--) {
-        if (categories[i].courseArray.length === 3) break
-        courseTemp = await Course.findById(categories[i].courses[j])
-        categories[i].courseArray.push(courseTemp)
+    let page = req.query.page || 1
+    let categories = await Category.paginate(
+      {},
+      {
+        page,
+        sort: { createdAt: -1 },
+        limit: 3,
+        populate: ['courses'],
       }
-    }
+    )
 
     const offedCourses = await Course.find({ offPercentage: { $gt: 1 } })
       .sort({ createdAt: -1 })
@@ -27,10 +27,10 @@ class homeController extends controller {
     let courses = await Course.find({})
     let orders = await Order.find({})
 
-    res.status(200).render('home/index', {
-      categories,
+    res.status(200).render('home/pages/index', {
+      categories: categories.docs,
+      categoriesAlt: categories,
       offedCourses,
-      categoriesCount: categories.length,
       coursesCount: courses.length,
       ordersCount: orders.length,
     })
@@ -45,14 +45,14 @@ class homeController extends controller {
       { page, sort: { createdAt: 1 }, limit: 2 }
     )
 
-    res.render('home/search', {
-      title: search ? 'عبارت جستجو شده :' + ' ' + search : 'جستجو',
+    res.render('home/pages/search', {
       courses: courses.docs,
       coursesAlt: courses,
+      title: search ? 'عبارت جستجو شده : ' + search : 'جستجو',
     })
   }
   async about(req, res, next) {
-    res.status(200).render('home/about', { title: 'درباره ما' })
+    res.status(200).render('home/pages/about', { title: 'درباره ما' })
   }
   async allCourses(req, res, next) {
     try {
@@ -61,10 +61,10 @@ class homeController extends controller {
         {},
         { page, sort: { createdAt: 1 }, limit: 6 }
       )
-      res.render('home/allcourses', {
-        title: 'همه دروس',
+      res.render('home/courses/allcourses', {
         courses: courses.docs,
         coursesAlt: courses,
+        title: 'همه دروس',
       })
     } catch (err) {
       next(err)
@@ -77,10 +77,11 @@ class homeController extends controller {
         {},
         { page, sort: { viewCount: -1 }, limit: 6 }
       )
-      res.render('home/mostview', {
-        title: 'پربازدید ترین دروس',
+      res.render('home/courses/mostview', {
         courses: courses.docs,
         coursesAlt: courses,
+        page,
+        title: 'پربازدید ترین دروس',
       })
     } catch (err) {
       next(err)
@@ -88,42 +89,58 @@ class homeController extends controller {
   }
 
   async panel(req, res, next) {
-    let user = await User.findById(req.user._id)
-    let teachers = await Teacher.find({ user: req.user._id })
-    let teacherStatus
-    if (teachers.length > 0) teacherStatus = teachers[0].status
-    if (teacherStatus == 'wait') teacherStatus = 'در حال بررسی'
-    if (teacherStatus == 'accepted') teacherStatus = 'پذیرفته شده'
-    if (teacherStatus == 'denied') teacherStatus = 'رد شده'
-    res
-      .status(200)
-      .render('home/panel', { title: 'پنل کاربری', user, teacherStatus })
+    try {
+      let user = await User.findById(req.user._id)
+      let teachers = await Teacher.find({ user: req.user._id })
+      let teacherStatus
+      if (teachers.length > 0) teacherStatus = teachers[0].status
+      if (teacherStatus == 'wait') teacherStatus = 'در حال بررسی'
+      if (teacherStatus == 'accepted') teacherStatus = 'پذیرفته شده'
+      if (teacherStatus == 'denied') teacherStatus = 'رد شده'
+      res
+        .status(200)
+        .render('home/pages/panel', {
+          user,
+          teacherStatus,
+          title: 'پنل کاربری',
+        })
+    } catch (err) {
+      next(err)
+    }
   }
 
   async showCart(req, res, next) {
-    let page = req.query.page || 1
-    let orders = await Order.paginate(
-      { user: req.user.id, done: false },
-      { page, sort: { createdAt: -1 }, limit: 3, populate: 'course' }
-    )
+    try {
+      let page = req.query.page || 1
+      let orders = await Order.paginate(
+        { user: req.user.id, done: false },
+        { page, sort: { createdAt: -1 }, limit: 6, populate: 'course' }
+      )
 
-    res.render('home/cart', {
-      orders: orders.docs,
-      ordersAlt: orders,
-      title: 'سبد خرید',
-    })
+      res.render('home/cart/cart', {
+        orders: orders.docs,
+        ordersAlt: orders,
+        title: 'سبد خرید',
+      })
+    } catch (err) {
+      next(err)
+    }
   }
   async paidCourses(req, res, next) {
-    let page = req.query.page || 1
-    let orders = await Order.paginate(
-      { user: req.user.id, done: true },
-      { page, sort: { createdAt: -1 }, limit: 3, populate: 'course' }
-    )
-    res.render('home/paid-courses', {
-      orders: orders.docs,
-      ordersAlt: orders,
-      title: 'دروس خریداری شده',
-    })
+    try {
+      let page = req.query.page || 1
+      let orders = await Order.paginate(
+        { user: req.user.id, done: true },
+        { page, sort: { createdAt: -1 }, limit: 6, populate: 'course' }
+      )
+      res.render('home/courses/paid-courses', {
+        orders: orders.docs,
+        ordersAlt: orders,
+        title: 'دوره های خریداری شده',
+      })
+    } catch (err) {
+      next(err)
+    }
   }
   async payOrder(req, res, next) {
     try {
@@ -210,41 +227,54 @@ class homeController extends controller {
   }
 
   async showComments(req, res, next) {
-    let page = req.query.page || 1
-    let comments = await Comment.paginate(
-      { user: req.user.id, approved: true },
-      {
-        page,
-        sort: { createdAt: -1 },
-        limit: 3,
-        populate: [
-          {
-            path: 'course',
-            select: 'title',
-          },
-        ],
-      }
-    )
+    try {
+      let page = req.query.page || 1
+      let comments = await Comment.paginate(
+        { user: req.user.id, approved: true },
+        {
+          page,
+          sort: { createdAt: -1 },
+          limit: 5,
+          populate: [
+            {
+              path: 'course',
+              select: 'title',
+            },
+          ],
+        }
+      )
 
-    let theUser = await User.findById(req.user.id)
+      let theUser = await User.findById(req.user.id)
 
-    res.render('home/self-comments', {
-      comments: comments.docs,
-      commentsAlt: comments,
-      theUser,
-      title: 'نظرات شما',
-    })
+      res.render('home/pages/self-comments', {
+        comments: comments.docs,
+        commentsAlt: comments,
+        theUser,
+        title: 'نظرات شما',
+      })
+    } catch (err) {
+      next(err)
+    }
   }
   async showLikes(req, res, next) {
     try {
-      let user = await User.paginate(
-        { _id: req.user.id },
-        { populate: 'likes' }
+      let user = await User.findById(req.user.id).populate('likes').exec()
+      let userCourses = []
+      for (let course of user.likes) userCourses.push(course)
+      let page = req.query.page || 1
+      let courses = await Course.paginate(
+        { _id: { $in: userCourses } },
+        {
+          page,
+          sort: { createdAt: -1 },
+          limit: 6,
+        }
       )
 
-      res.render('home/likes', {
-        title: ' درس های پسند شده',
-        courses: user.docs[0].likes,
+      res.render('home/courses/likes', {
+        courses: courses.docs,
+        coursesAlt: courses,
+        title: ' دوره های پسند شده',
       })
     } catch (err) {
       next(err)
@@ -252,14 +282,23 @@ class homeController extends controller {
   }
   async showBookmarks(req, res, next) {
     try {
-      let user = await User.paginate(
-        { _id: req.user.id },
-        { populate: 'bookmarks' }
+      let user = await User.findById(req.user.id).populate('bookmarks').exec()
+      let userCourses = []
+      for (let course of user.bookmarks) userCourses.push(course)
+      let page = req.query.page || 1
+      let courses = await Course.paginate(
+        { _id: { $in: userCourses } },
+        {
+          page,
+          sort: { createdAt: -1 },
+          limit: 6,
+        }
       )
 
-      res.render('home/bookmarks', {
-        title: ' درس های بوک مارک شده',
-        courses: user.docs[0].bookmarks,
+      res.render('home/courses/bookmarks', {
+        courses: courses.docs,
+        coursesAlt: courses,
+        title: ' دوره های بوک مارک شده',
       })
     } catch (err) {
       next(err)

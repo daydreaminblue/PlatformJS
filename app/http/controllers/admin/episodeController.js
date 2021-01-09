@@ -2,7 +2,6 @@ const controller = require('app/http/controllers/controller')
 const Course = require('app/models/course')
 const Episode = require('app/models/episode')
 const fs = require('fs')
-//const sharp = require('sharp')
 
 class episodeController extends controller {
   async index(req, res, next) {
@@ -17,26 +16,25 @@ class episodeController extends controller {
           populate: 'course',
         }
       )
-      for (let i = 0; i < episodes.docs.length; i=i+1) {
-        console.log('sgdgdsxxxyyy', episodes.docs[i].course)
-      }
       res.render('admin/episodes/index', {
-        title: 'ویدیو ها',
         episodes: episodes.docs,
         episodesAlt: episodes,
+        title: 'ویدیو ها',
       })
     } catch (err) {
       next(err)
     }
   }
-
   async create(req, res, next) {
     let courses = await Course.find({})
     let course = null
     if (req.params.courseId) course = await Course.findById(req.params.courseId)
-    res.render('admin/episodes/create', { courses, course })
+    res.render('admin/episodes/create', {
+      courses,
+      course,
+      title: 'اضافه کردن قسمت جدید',
+    })
   }
-
   async store(req, res, next) {
     try {
       let status = await this.validationData(req)
@@ -62,21 +60,23 @@ class episodeController extends controller {
       next(err)
     }
   }
-
   async edit(req, res, next) {
     try {
-      this.isMongoId(req.params.id)
+      this.isMongoId(req.params.episodeId)
 
-      let episode = await Episode.findById(req.params.id)
+      let episode = await Episode.findById(req.params.episodeId)
       let courses = await Course.find({})
       if (!episode) this.error('چنین ویدیو ای وجود ندارد', 404)
 
-      return res.render('admin/episodes/edit', { episode, courses })
+      return res.render('admin/episodes/edit', {
+        episode,
+        courses,
+        title: 'ویرایش قسمت ' + episode.title,
+      })
     } catch (err) {
       next(err)
     }
   }
-
   async update(req, res, next) {
     try {
       let status = await this.validationData(req)
@@ -100,7 +100,7 @@ class episodeController extends controller {
 
       objForUpdate.slug = this.slug(req.body.title)
 
-      await Episode.findByIdAndUpdate(req.params.id, {
+      await Episode.findByIdAndUpdate(req.params.episodeId, {
         $set: { ...req.body, ...objForUpdate },
       })
 
@@ -109,21 +109,13 @@ class episodeController extends controller {
       next(err)
     }
   }
-
   async destroy(req, res, next) {
     try {
-      this.isMongoId(req.params.id)
+      this.isMongoId(req.params.episodeId)
 
-      let episode = await Episode.findById(req.params.id)
+      let episode = await Episode.findById(req.params.episodeId)
       if (!episode) this.error('چنین ویدیو ای وجود ندارد', 404)
-
-      let courseId = episode.course
-
-      // delete courses
       episode.remove()
-
-      // course time update
-      this.updateCourseTime(courseId)
 
       return res.redirect('/admin/episodes')
     } catch (err) {

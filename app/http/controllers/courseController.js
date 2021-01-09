@@ -88,7 +88,7 @@ class courseController extends controller {
 
   async single(req, res) {
     let course = await Course.findOneAndUpdate(
-      { slug: req.params.course },
+      { slug: req.params.courseSlug },
       { $inc: { viewCount: 1 } }
     )
       .populate([
@@ -137,8 +137,8 @@ class courseController extends controller {
     }
 
     let targetEpisode
-    if (req.params.episode)
-      targetEpisode = await Episode.findOne({ slug: req.params.episode })
+    if (req.params.episodeSlug)
+      targetEpisode = await Episode.findOne({ slug: req.params.episodeSlug })
 
     let likeFlag, bookmarkFlag, teacherFlag, user
     if (req.user) {
@@ -158,7 +158,7 @@ class courseController extends controller {
       teacherFlag = req.user._id.equals(course.user._id)
     }
 
-    res.render('home/single', {
+    res.render('home/single/single', {
       course,
       targetEpisode,
       user,

@@ -38,7 +38,7 @@ router.get('/orders', adminController.showOrderList)
 
 // Course Routes
 router.get('/courses', courseController.index)
-router.get('/courses/:id/episodes', courseController.courseEpisodes)
+router.get('/courses/:courseId/episodes', courseController.courseEpisodes)
 router.get('/courses/create', courseController.create)
 router.post(
   '/courses/create',
@@ -47,32 +47,31 @@ router.post(
   courseValidator.handle(),
   courseController.store
 )
-router.get('/courses/:id/create/video', courseController.createVideo)
-router.post(
-  '/courses/:id/create/video',
-  uploadVideo.single('video'),
-  convertFileToField.handleVideo,
-  videoValidator.handle(),
-  courseController.storeVideo
-)
-router.get('/courses/:id/edit/video', courseController.editVideo)
+router.get('/courses/:courseId/edit', courseController.edit)
 router.put(
-  '/courses/:id/edit/video',
-  uploadVideo.single('video'),
-  convertFileToField.handleVideo,
-  videoValidator.handle(),
-  courseController.storeVideo
-)
-
-router.get('/courses/:id/edit', courseController.edit)
-router.put(
-  '/courses/:id',
+  '/courses/:courseId',
   uploadImage.single('images'),
   convertFileToField.handleImages,
   courseValidator.handle(),
   courseController.update
 )
-router.delete('/courses/:id', courseController.destroy)
+router.delete('/courses/:courseId', courseController.destroy)
+router.get('/courses/:courseId/create/video', courseController.createVideo)
+router.post(
+  '/courses/:courseId/create/video',
+  uploadVideo.single('video'),
+  convertFileToField.handleVideo,
+  videoValidator.handle(),
+  courseController.storeVideo
+)
+router.get('/courses/:courseId/edit/video', courseController.editVideo)
+router.put(
+  '/courses/:courseId/edit/video',
+  uploadVideo.single('video'),
+  convertFileToField.handleVideo,
+  videoValidator.handle(),
+  courseController.storeVideo
+)
 
 // Episode Routes
 router.get('/episodes', episodeController.index)
@@ -85,15 +84,15 @@ router.post(
   episodeValidator.handle(),
   episodeController.store
 )
-router.get('/episodes/:id/edit', episodeController.edit)
+router.get('/episodes/:episodeId/edit', episodeController.edit)
 router.put(
-  '/episodes/:id',
+  '/episodes/:episodeId',
   uploadVideo.single('video'),
   convertFileToField.handleVideo,
   episodeValidator.handle(),
   episodeController.update
 )
-router.delete('/episodes/:id', episodeController.destroy)
+router.delete('/episodes/:episodeId', episodeController.destroy)
 
 // Category Routes
 router.get('/categories', categoryController.index)
@@ -103,35 +102,26 @@ router.post(
   categoryValidator.handle(),
   categoryController.store
 )
-router.get('/categories/:id/edit', categoryController.edit)
+router.get('/categories/:categoryId/edit', categoryController.edit)
 router.put(
-  '/categories/:id',
+  '/categories/:categoryId',
   categoryValidator.handle(),
   categoryController.update
 )
-router.delete('/categories/:id', categoryController.destroy)
+router.delete('/categories/:categoryId', categoryController.destroy)
 
-router.post(
-  '/upload-image',
-  uploadImage.single('upload-image'),
-  adminController.uploadImage
-)
-router.post(
-  '/upload-video',
-  uploadImage.single('upload-video'),
-  adminController.uploadImage
-)
-
+//Comment Routes
 router.get('/comments', commentController.index)
 router.get('/comments/approved', commentController.approved)
-router.put('/comments/:id/approved', commentController.update)
-router.delete('/comments/:id', commentController.destroy)
+router.put('/comments/:commentId/approved', commentController.update)
+router.delete('/comments/:commentId', commentController.destroy)
 
+//Teacher Routes
 router.get('/teachers', teacherController.index)
 router.get('/teachers/approved', teacherController.approved)
-router.get('/teachers/:id', teacherController.review)
-router.put('/teachers/:id/approved', teacherController.approve)
-router.put('/teachers/:id/denied', teacherController.deny)
+router.get('/teachers/:teacherId', teacherController.review)
+router.put('/teachers/:teacherId/approved', teacherController.approve)
+router.put('/teachers/:teacherId/denied', teacherController.deny)
 
 
 module.exports = router

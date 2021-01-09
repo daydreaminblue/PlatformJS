@@ -21,7 +21,7 @@ categorySchema.virtual('childs', {
 })
 
 categorySchema.methods.path = function () {
-  return `/categories/${this.slug}`
+  return `/categories/${this.slug}/${this._id}`
 }
 
 module.exports = mongoose.model('Category', categorySchema)

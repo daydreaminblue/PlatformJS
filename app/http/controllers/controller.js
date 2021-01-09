@@ -15,7 +15,6 @@ module.exports = class controller {
       const messages = []
 
       errors.forEach((err) => messages.push(err.msg))
-      console.log('errorrrrs',errors)
       req.flash('errors', messages)
 
       return false

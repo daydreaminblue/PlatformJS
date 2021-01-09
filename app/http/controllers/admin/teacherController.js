@@ -23,9 +23,9 @@ class teacherController extends controller {
       )
 
       res.render('admin/teachers/index', {
-        title: 'مدرس های بررسی شده',
         teachers: teachers.docs,
         teachersAlt: teachers,
+        title: 'مدرس های بررسی شده',
       })
     } catch (err) {
       next(err)
@@ -50,9 +50,9 @@ class teacherController extends controller {
       )
 
       res.render('admin/teachers/approved', {
-        title: 'مدرس های بررسی نشده',
         teachers: teachers.docs,
         teachersAlt: teachers,
+        title: 'مدرس های بررسی نشده',
       })
     } catch (err) {
       next(err)
@@ -61,7 +61,7 @@ class teacherController extends controller {
   async review(req, res, next) {
     try {
       let teachers = await Teacher.paginate(
-        { _id: req.params.id },
+        { _id: req.params.teacherId },
         {
           populate: [
             {
@@ -72,16 +72,18 @@ class teacherController extends controller {
         }
       )
 
-      let resumeType = teachers.docs[0].resume.endsWith('.png')
-        ? 'image'
-        : teachers.docs[0].resume.endsWith('.pdf')
-        ? 'document'
-        : null
+      let resumeType =
+        teachers.docs[0].resume.endsWith('.png') ||
+        teachers.docs[0].resume.endsWith('.jpg')
+          ? 'image'
+          : teachers.docs[0].resume.endsWith('.pdf')
+          ? 'document'
+          : null
 
       res.render('admin/teachers/review', {
-        title: 'بررسی وضعیت مدرس درخواست کننده',
         teacher: teachers.docs[0],
         resumeType,
+        title: 'بررسی وضعیت مدرس درخواست کننده',
       })
     } catch (err) {
       next(err)
@@ -104,9 +106,9 @@ class teacherController extends controller {
 
   async approve(req, res, next) {
     try {
-      this.isMongoId(req.params.id)
+      this.isMongoId(req.params.teacherId)
 
-      const result = await Teacher.findByIdAndUpdate(req.params.id, {
+      const result = await Teacher.findByIdAndUpdate(req.params.teacherId, {
         $set: { status: 'accepted' },
       })
       await User.findByIdAndUpdate(result.user, {
@@ -119,9 +121,9 @@ class teacherController extends controller {
   }
   async deny(req, res, next) {
     try {
-      this.isMongoId(req.params.id)
+      this.isMongoId(req.params.teacherId)
 
-      const result = await Teacher.findByIdAndUpdate(req.params.id, {
+      const result = await Teacher.findByIdAndUpdate(req.params.teacherId, {
         $set: { status: 'denied' },
       })
       await User.findByIdAndUpdate(result.user, {
@@ -134,7 +136,7 @@ class teacherController extends controller {
   }
 
   async teacherPage(req, res, next) {
-    return res.render('home/teacher', { title: 'مدرس شوید' })
+    return res.render('home/pages/teacher', { title: 'مدرس شوید' })
   }
   async teacherReq(req, res, next) {
     try {
@@ -147,7 +149,7 @@ class teacherController extends controller {
       let resume = this.getUrlResume(req.file)
 
       let newReq = new Teacher({
-        user: req.params.id,
+        user: req.params.teacherId,
         ...req.body,
         resume,
       })
@@ -158,6 +160,7 @@ class teacherController extends controller {
       next(err)
     }
   }
+  
   getUrlResume(resume) {
     return `${resume.destination}/${resume.filename}`.substring(8)
   }

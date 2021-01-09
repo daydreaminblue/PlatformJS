@@ -29,17 +29,15 @@ class commentController extends controller {
           ],
         }
       )
-      // return res.json(comments);
       res.render('admin/comments/index', {
-        title: 'کامنت ها',
         comments: comments.docs,
         commentsAlt: comments,
+        title: 'کامنت های تایید شده',
       })
     } catch (err) {
       next(err)
     }
   }
-
   async approved(req, res, next) {
     try {
       let page = req.query.page || 1
@@ -68,9 +66,9 @@ class commentController extends controller {
         }
       )
       res.render('admin/comments/approved', {
-        title: 'کامنت های تایید نشده',
         comments: comments.docs,
         commentsAlt: comments,
+        title: 'کامنت های تایید نشده',
       })
     } catch (err) {
       next(err)
@@ -79,9 +77,9 @@ class commentController extends controller {
 
   async update(req, res, next) {
     try {
-      this.isMongoId(req.params.id)
+      this.isMongoId(req.params.commentId)
 
-      let comment = await Comment.findById(req.params.id)
+      let comment = await Comment.findById(req.params.commentId)
         .populate('belongTo')
         .exec()
       if (!comment) this.error('چنین کامنتی وجود ندارد', 404)
@@ -96,15 +94,12 @@ class commentController extends controller {
       next(err)
     }
   }
-
   async destroy(req, res, next) {
     try {
-      this.isMongoId(req.params.id)
+      this.isMongoId(req.params.commentId)
 
-      let comment = await Comment.findById(req.params.id).exec()
+      let comment = await Comment.findById(req.params.commentId).exec()
       if (!comment) this.error('چنین کامنتی وجود ندارد', 404)
-
-      // delete courses
       comment.remove()
 
       return this.back(req, res)

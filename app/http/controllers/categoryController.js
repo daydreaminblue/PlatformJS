@@ -1,27 +1,30 @@
 const controller = require('app/http/controllers/controller')
 const Category = require('app/models/category')
+const Course = require('app/models/course')
 
 class categoryController extends controller {
   async index(req, res, next) {
     try {
+      let category = await Category.findById(req.params.categoryId)
+        .populate('courses')
+        .exec()
+      let categoryCourses = []
+      for (let course of category.courses) categoryCourses.push(course)
       let page = req.query.page || 1
-      let category = await Category.paginate(
-        { slug: req.params.category },
+      let courses = await Course.paginate(
+        { _id: { $in: categoryCourses } },
         {
           page,
-          sort: { createdAt: 1 },
-          populate: [
-            {
-              path: 'courses',
-            },
-          ],
+          sort: { createdAt: -1 },
+          limit: 1,
         }
       )
-      
-      res.render('home/category', {
-        title: 'دروس موضوع ' + category.docs[0].name,
-        category: category.docs[0],
-        categoryAlt: category,
+
+      res.render('home/pages/category', {
+        category,
+        courses: courses.docs,
+        coursesAlt: courses,
+        title: 'دروس موضوع ' + category.name,
       })
     } catch (err) {
       next(err)

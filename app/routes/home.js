@@ -28,7 +28,7 @@ router.get('/search', homeController.search)
 router.get('/allcourses', homeController.allCourses)
 router.get('/mostViewedCourses', homeController.mostViewedCourses)
 //show category
-router.get('/categories/:category', categoryController.index)
+router.get('/categories/:categorySlug/:categoryId', categoryController.index)
 //panel
 router.get('/panel', homeController.panel)
 //show cart
@@ -37,20 +37,46 @@ router.get('/paid-courses', homeController.paidCourses)
 router.post('/cart/:orderId', homeController.payOrder)
 router.get('/cart/pay-all', homeController.payOrders)
 router.delete('/cart/:orderId', homeController.orderDestroy)
-//like
+//likes
 router.post('/courses/:courseId/like', courseController.likeCourse)
 router.post(
   '/courses/:courseId/like/destroy',
   courseController.destroyLikeCourse
 )
 router.get('/likes', homeController.showLikes)
-//bookmark
+//bookmarks
 router.post('/courses/:courseId/bookmark', courseController.bookmarkCourse)
 router.post(
   '/courses/:courseId/bookmark/destroy',
   courseController.destroyBookmarkCourse
 )
 router.get('/bookmarks', homeController.showBookmarks)
+//single course
+router.get('/courses/:courseSlug', courseController.single)
+router.get('/courses/:courseSlug/:episodeSlug', courseController.single)
+router.post('/courses/:courseId', courseController.orderCourse)
+//comments
+router.get('/showComments', homeController.showComments)
+router.post(
+  '/comment',
+  redirectIfNotAuthenticated.handle,
+  commentValidator.handle(),
+  courseController.comment
+) 
+//teacher request
+router.get(
+  '/teacher',
+  redirectIfNotAuthenticated.handle,
+  teacherController.teacherPage
+)
+router.post(
+  '/teacher/:teacherId',
+  redirectIfNotAuthenticated.handle,
+  uploadResume.single('resume'),
+  convertFileToField.handleResume,
+  teacherValidator.handle(),
+  teacherController.teacherReq
+)
 //payment
 /*
 router.post(
@@ -64,31 +90,5 @@ router.get(
   courseController.checker
 )
 */
-//single course
-router.get('/courses/:course', courseController.single)
-router.get('/courses/:course/:episode', courseController.single)
-router.post('/courses/:courseId', courseController.orderCourse)
-//comments
-router.get('/showComments', homeController.showComments)
-router.post(
-  '/comment',
-  redirectIfNotAuthenticated.handle,
-  commentValidator.handle(),
-  courseController.comment
-)
-//teacher
-router.get(
-  '/teacher',
-  redirectIfNotAuthenticated.handle,
-  teacherController.teacherPage
-)
-router.post(
-  '/teacher/:id',
-  redirectIfNotAuthenticated.handle,
-  uploadResume.single('resume'),
-  convertFileToField.handleResume,
-  teacherValidator.handle(),
-  teacherController.teacherReq
-)
 
 module.exports = router
