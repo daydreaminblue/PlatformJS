@@ -96,6 +96,10 @@ router.delete('/episodes/:episodeId', episodeController.destroy)
 
 // Category Routes
 router.get('/categories', categoryController.index)
+router.get(
+  '/categories/:categorySlug/:categoryId/courses',
+  categoryController.categoryCourses
+)
 router.get('/categories/create', categoryController.create)
 router.post(
   '/categories/create',
@@ -122,6 +126,5 @@ router.get('/teachers/approved', teacherController.approved)
 router.get('/teachers/:teacherId', teacherController.review)
 router.put('/teachers/:teacherId/approved', teacherController.approve)
 router.put('/teachers/:teacherId/denied', teacherController.deny)
-
 
 module.exports = router

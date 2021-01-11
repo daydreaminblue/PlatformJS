@@ -28,6 +28,7 @@ router.get('/search', homeController.search)
 router.get('/allcourses', homeController.allCourses)
 router.get('/mostViewedCourses', homeController.mostViewedCourses)
 //show category
+router.get('/categories', categoryController.allCategories)
 router.get('/categories/:categorySlug/:categoryId', categoryController.index)
 //panel
 router.get('/panel', homeController.panel)

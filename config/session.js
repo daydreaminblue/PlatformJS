@@ -4,7 +4,7 @@ const mongoose = require('mongoose')
 
 module.exports = {
   name: 'session_roocket',
-  secret: process.env.SESSION_SECRETKEY,
+  secret:' mysecretkey',
   resave: true,
   saveUninitialized: true,
   cookie: { expires: new Date(Date.now() + 1000 * 60 * 60 * 6) },

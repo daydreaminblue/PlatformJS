@@ -138,9 +138,16 @@ class courseController extends controller {
 
       await newCourse.save()
 
-      await Category.findByIdAndUpdate(newCourse.category, {
-        $push: { courses: newCourse._id },
-      })
+      let categoryOfCourse = await Category.findByIdAndUpdate(
+        newCourse.category,
+        {
+          $push: { courses: newCourse._id },
+        }
+      )
+      if (categoryOfCourse.parent)
+        await Category.findByIdAndUpdate(categoryOfCourse.parent, {
+          $push: { courses: newCourse._id },
+        })
 
       return res.redirect('/admin/courses')
     } catch (err) {
@@ -182,9 +189,8 @@ class courseController extends controller {
         objForUpdate.images = this.imageResize(req.file)
         objForUpdate.thumb = objForUpdate.images[480]
       }
-
-      delete req.body.images
-      objForUpdate.slug = this.slug(req.body.title)
+      if (course.title != req.body.title)
+        objForUpdate.slug = this.slug(req.body.title)
 
       await Course.findByIdAndUpdate(req.params.courseId, {
         $set: { ...req.body, ...objForUpdate },
@@ -193,12 +199,22 @@ class courseController extends controller {
         await course.off(Number(req.body.offPercentage))
 
       if (req.body.category !== course.category) {
-        await Category.findByIdAndUpdate(course.category, {
+        let oldCat, newCat
+        oldCat = await Category.findByIdAndUpdate(course.category, {
           $pull: { courses: course._id },
         })
-        await Category.findByIdAndUpdate(req.body.category, {
+        if (oldCat.parent)
+          await Category.findByIdAndUpdate(oldCat.parent, {
+            $pull: { courses: course._id },
+          })
+        //
+        newCat = await Category.findByIdAndUpdate(req.body.category, {
           $push: { courses: course._id },
         })
+        if (newCat.parent)
+          await Category.findByIdAndUpdate(newCat.parent, {
+            $push: { courses: course._id },
+          })
       }
 
       return res.redirect('/admin/courses')
@@ -244,9 +260,14 @@ class courseController extends controller {
       )
 
       // delete course from category
-      await Category.findByIdAndUpdate(course.category, {
+      let categoryOfCourse = await Category.findByIdAndUpdate(course.category, {
         $pull: { courses: course._id },
       })
+      let x
+      if (categoryOfCourse.parent)
+        x =await Category.findByIdAndUpdate(categoryOfCourse.parent, {
+          $pull: { courses: course._id },
+        })
 
       // delete course from orders
       let orders = await Order.find({ course: req.params.courseId })

@@ -6,7 +6,7 @@ module.exports = {
     database,
     session,
     layout,
-    port : process.env.APPLICATION_PORT,
-    cookie_secretkey : process.env.COOKIE_SECRETKEY,
+    port : 3000,
+    cookie_secretkey :' mysecretkey',
     debug : true
 }

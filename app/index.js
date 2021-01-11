@@ -23,7 +23,9 @@ module.exports = class Application {
 
   setupExpress() {
     const server = http.createServer(app)
-    server.listen(3000, () => console.log(`Listening on port ${3000}`))
+    server.listen(process.env.PORT || 3000, () =>
+      console.log(`Listening on port ${process.env.PORT || 3000}`)
+    )
   }
 
   setMongoConnection() {
@@ -32,7 +34,10 @@ module.exports = class Application {
     mongoose.set('useUnifiedTopology', true)
     mongoose.set('useCreateIndex', true)
     mongoose.set('useFindAndModify', false)
-    mongoose.connect(config.database.url)
+    mongoose.connect(
+      process.env.MONGODB_URI ||
+        `mongodb+srv://trackdb:trackdbpassword@cluster0.x7iij.mongodb.net/<dbname>?retryWrites=true&w=majority`
+    )
   }
 
   setConfig() {

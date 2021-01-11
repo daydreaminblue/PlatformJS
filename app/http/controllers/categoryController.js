@@ -30,6 +30,28 @@ class categoryController extends controller {
       next(err)
     }
   }
+  async allCategories(req, res, next) {
+    try {
+      let page = req.query.page || 1
+      let categories = await Category.paginate(
+        {},
+        {
+          page,
+          sort: { createdAt: -1 },
+          limit: 3,
+          populate: 'courses',
+        }
+      )
+
+      res.render('home/pages/categories', {
+        categories: categories.docs,
+        categoriesAlt: categories,
+        title: 'تمامی دسته های موجود',
+      })
+    } catch (err) {
+      next(err)
+    }
+  }
 }
 
 module.exports = new categoryController()

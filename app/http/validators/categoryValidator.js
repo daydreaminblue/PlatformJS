@@ -11,7 +11,7 @@ class categoryValidator extends validator {
                 .withMessage('عنوان نمیتواند کمتر از 3 کاراکتر باشد')
                 .custom(async (value , { req }) => {
                     if(req.query._method === 'put') {
-                        let category = await Category.findById(req.params.id);
+                        let category = await Category.findById(req.params.categoryId);
                         if(category.slug === value) return;
                     }
                     

@@ -11,7 +11,7 @@ class courseValidator extends validator {
         .withMessage('عنوان نمیتواند کمتر از 5 کاراکتر باشد')
         .custom(async (value, { req }) => {
           if (req.query._method === 'put') {
-            let course = await Course.findById(req.params.id)
+            let course = await Course.findById(req.params.courseId)
             if (course.title === value) return
           }
           let course = await Course.findOne({ slug: this.slug(value) })

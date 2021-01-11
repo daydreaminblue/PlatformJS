@@ -1,5 +1,6 @@
 const controller = require('app/http/controllers/controller')
 const Category = require('app/models/category')
+const Course = require('app/models/course')
 
 class categoryController extends controller {
   async index(req, res, next) {
@@ -11,6 +12,28 @@ class categoryController extends controller {
       )
 
       res.render('admin/categories/index', { categories, title: 'دسته ها' })
+    } catch (err) {
+      next(err)
+    }
+  }
+  async categoryCourses(req, res,next) {
+    try {
+      let category = await Category.findById(req.params.categoryId)
+      let page = req.query.page || 1
+      let courses = await Course.paginate(
+        { category: req.params.categoryId },
+        {
+          page,
+          sort: { createdAt: -1 },
+          limit: 6,
+        }
+      )
+
+      res.render('admin/categories/categoryCourses', {
+        title: 'دوره های دسته ی ' + category.name,
+        courses: courses.docs,
+        coursesAlt: courses,
+      })
     } catch (err) {
       next(err)
     }
