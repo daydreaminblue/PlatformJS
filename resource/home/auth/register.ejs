@@ -1,0 +1,114 @@
+<section>
+  <div class="container d-flex flex-column">
+    <div class="row align-items-center justify-content-center min-vh-100">
+      <div class="col-md-6 col-lg-5 col-xl-5 py-6 py-md-0">
+        <div class="card shadow zindex-100 mb-0">
+          <div class="card-body px-md-5 py-5">
+            <div class="mb-1">
+              <h6 class="h3 tar">ثبت نام</h6>
+              <p class="text-muted mb-0 tar">برای ادامه به یک اکانت بسازید</p>
+            </div>
+            <div class="mb-2">
+              <% let flag = false %> <% if(errors.length > 0) { %> <% flag =
+              true %>
+              <h6 class="h3 tar">خطا</h6>
+              <p class="text-muted mb-0 tar">
+                <% errors.forEach(error => { %> <%= error %><br />
+                <% }) %>
+              </p>
+              <% } %>
+            </div>
+            <span class="clearfix"></span>
+            <form
+              class="form-horizontal"
+              method="POST"
+              action="/auth/register"
+              novalidate
+            >
+              <div class="form-group tar">
+                <label class="form-control-label">نام</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i data-feather="user"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="text"
+                    class="form-control tal"
+                    id="input-name"
+                    placeholder="name"
+                    name="name"
+                    value="<%= old('name') %>"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group tar">
+                <label class="form-control-label">ایمیل</label>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i data-feather="mail"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="email"
+                    class="form-control tal"
+                    id="input-email"
+                    placeholder="name@example.com"
+                    name="email"
+                    value="<%= old('email') %>"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group mb-0">
+                <div
+                  class="d-flex align-items-center justify-content-between flex-row tar"
+                >
+                  <div>
+                    <label class="form-control-label">رمز عبور</label>
+                  </div>
+                  <div class="mb-2">
+                    <a
+                      href="#"
+                      class="small text-muted text-underline--dashed border-primary"
+                      data-toggle="password-text"
+                      data-target="#input-password"
+                      >مشاهده رمز عبور</a
+                    >
+                  </div>
+                </div>
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i data-feather="key"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="password"
+                    class="form-control tal"
+                    id="input-password"
+                    placeholder="Password"
+                    value="<%= old('password') %>"
+                    name="password"
+                  />
+                </div>
+              </div>
+              <div class="mt-4">
+                <button type="submit" class="btn btn-block btn-primary">
+                  ثبت نام
+                </button>
+              </div>
+            </form>
+          </div>
+          <div class="card-footer px-md-5 tar">
+            <small>قبلا ثبت نام کردید؟</small>
+            <a href="/auth/login" class="small font-weight-bold">وارد شوید</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,186 @@
+<link rel="stylesheet" href="/resources/styles/form.css" />
+
+<div class="left_side">
+  <div class="container d-flex flex-column">
+    <div class="row align-items-center justify-content-center min-vh-100">
+      <div class="col-md-6 col-lg-5 col-xl-5 py-6 py-md-0">
+        <div
+          class="card shadow zindex-100 mb-0"
+          style="
+            width: 40em;
+            margin-left: 34em;
+            background-color: #24252a;
+            box-shadow: 0 0 1.25rem #24252a;
+            border: 0;
+          "
+        >
+          <div class="card-body px-md-5 py-5">
+            <div class="mb-1">
+              <h6 class="h3 tar wheat">ویرایش کردن درس</h6>
+            </div>
+            <div class="mb-2">
+              <% let flag = false %> <% if(errors.length > 0) { %> <% flag =
+              true %>
+              <h6 class="h3 tar">خطا</h6>
+              <p class="text-muted mb-0 tar">
+                <% errors.forEach(error => { %> <%= error %><br />
+                <% }) %>
+              </p>
+              <% } %>
+            </div>
+            <span class="clearfix"></span>
+            <form
+              class="form-horizontal"
+              action="/admin/courses/<%= course._id %>?_method=put"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >عنوان دوره</label
+                >
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i data-feather="book"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="عنوان دوره را وارد کنید"
+                    name="title"
+                    id="title"
+                    value="<%= course.title %>"
+                    class="form-control form-control-muted tar"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >دسته بندی</label
+                >
+                <div class="input-group">
+                  <select
+                    class="custom-select form-control-muted"
+                    name="category"
+                    id="category"
+                  >
+                    <% categories.forEach(cate => { %>
+                    <option value="<%= cate.id %>"
+                      <%= cate.id == course.category ? 'selected' : ''%>>
+                      <%= cate.name %></option>
+                    <% }) %>
+                  </select>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >تصویر</label
+                >
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i data-feather="image"></i
+                    ></span>
+                  </div>
+                  <input
+                    value="<%= course.thumb %>"
+                    class="form-control tal"
+                    type="file"
+                    class="form-control form-control-muted"
+                    name="images"
+                    id="images"
+                    placeholder="تصویر را وارد کنید"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >قیمت</label
+                >
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i data-feather="dollar-sign"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="قیمت غذا را وارد کنید"
+                    name="price"
+                    id="price"
+                    value="<%= course.price %>"
+                    class="form-control form-control-muted"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >درصد تحفیف</label
+                >
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i data-feather="dollar-sign"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="درصد تحفیف را وارد کنید"
+                    name="offPercentage"
+                    id="offPercentage"
+                    value="<%= course.offPercentage %>"
+                    class="form-control form-control-muted"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >خلاصه</label
+                >
+                <div class="input-group">
+                  <textarea
+                    name="summary"
+                    id="summary"
+                    placeholder="خلاصه را وارد کنید"
+                    class="form-control tar"
+                    rows="3"
+                  >
+                    <%= course.summary %></textarea
+                  >
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >توضیحات</label
+                >
+                <div class="input-group">
+                  <textarea
+                    name="body"
+                    id="body"
+                    placeholder="توضیحات را وارد کنید"
+                    class="form-control form-control-muted"
+                  >
+                    <%= course.body %></textarea
+                  >
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <button type="submit" class="btn btn-block btn-primary">
+                  ثبت
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

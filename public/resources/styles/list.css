@@ -1,0 +1,331 @@
+/*Checkboxes styles*/
+input[type='checkbox'] {
+  display: none;
+}
+
+input[type='checkbox'] + label {
+  display: block;
+  position: relative;
+  padding-left: 35px;
+  margin-bottom: 20px;
+  font: 14px/20px 'Open Sans', Arial, sans-serif;
+  color: #ddd;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+}
+
+input[type='checkbox'] + label:last-child {
+  margin-bottom: 0;
+}
+
+input[type='checkbox'] + label:before {
+  content: '';
+  display: block;
+  width: 20px;
+  height: 20px;
+  border: 1px solid #ddd;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0.6;
+  -webkit-transition: all 0.12s, border-color 0.08s;
+  transition: all 0.12s, border-color 0.08s;
+}
+
+input[type='checkbox']:checked + label:before {
+  width: 10px;
+  top: -5px;
+  left: 5px;
+  border-radius: 0;
+  opacity: 1;
+  border-top-color: transparent;
+  border-left-color: transparent;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+/* drop down menu */
+.dropbtn {
+  background-color: #3498db;
+  color: white;
+  padding: 16px;
+  font-size: 16px;
+  border: none;
+  cursor: pointer;
+}
+
+.dropbtn:hover,
+.dropbtn:focus {
+  background-color: #2980b9;
+}
+
+.dropdown {
+  position: relative;
+  display: inline-block;
+  width: 100%;
+  cursor: pointer;
+}
+
+.dropdown-content {
+  display: none;
+  position: absolute;
+  background-color: #f1f1f1;
+  min-width: 160px;
+  overflow: auto;
+  border-radius: 0.2em;
+  z-index: 1;
+}
+
+.dropdown-content a {
+  color: black;
+  padding: 12px 16px;
+  text-decoration: none;
+  display: block;
+}
+
+.dropdown a:hover {
+  background-color: #ddd;
+}
+
+.show {
+  display: block;
+}
+
+.table__row {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  position: relative;
+}
+
+.table {
+  background-color: #004983;
+  font-size: 0.9em;
+  border-radius: 0.2em;
+  padding: 1em;
+  margin: 2em 0 2em 2em;
+  -ms-flex-item-align: start;
+  align-self: flex-start;
+  -ms-flex-preferred-size: 75%;
+  flex-basis: 75%;
+}
+
+.table__options {
+  position: relative;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  border-bottom: 1px solid rgba(57, 45, 104, 0.5);
+  padding-bottom: 1em;
+}
+
+.table__options p:nth-child(n) {
+  color: white;
+  text-align: center;
+  flex-basis: calc(100% / 3) !important;
+}
+
+.table__no__wrapper {
+  padding: 2em 0;
+}
+
+.table__no {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-wrap: wrap;
+  flex-wrap: wrap;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin: 0.5em 0;
+}
+
+.table__no p:nth-child(n) {
+  color: white;
+  text-align: center;
+  flex-basis: calc(100% / 3) !important;
+}
+
+.table__no-id {
+  margin-right: 1.5em;
+}
+
+.table__no-name {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.table__no-actions {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.table__no-actions_img {
+  background: url('../../../../resources/images/more.png') no-repeat;
+  height: 2em;
+  -ms-flex-preferred-size: 17%;
+  flex-basis: 17%;
+}
+
+.footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: reverse;
+  -ms-flex-direction: row-reverse;
+  flex-direction: row-reverse;
+  -webkit-box-pack: justify;
+  -ms-flex-pack: justify;
+  justify-content: space-between;
+}
+
+.page_number_wrapper {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-left: 2em;
+}
+
+.page_number {
+  height: 3em;
+  width: 3em;
+  background-color: #1f3a93;
+  border-radius: 50%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  margin-right: 0.5em;
+  color: white;
+  font-size: 0.9em;
+}
+
+.right_side {
+  -ms-flex-preferred-size: 21%;
+  flex-basis: 21%;
+  position: sticky;
+  top: 0;
+  right: 0;
+}
+.left_side {
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+}
+
+#items {
+  display: none;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  max-width: 10em;
+  margin-right: 22em;
+  color: white;
+  font-size: 0.9em;
+  -ms-flex-preferred-size: 12%;
+  flex-basis: 12%;
+}
+
+#items_selected_count {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #ffc107;
+  width: 2em;
+  height: 2em;
+  border-radius: 0.2em;
+}
+
+#items_to_delete {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+  -webkit-box-align: center;
+  -ms-flex-align: center;
+  align-items: center;
+  background: #ffc107;
+  width: 4em;
+  height: 2em;
+  border-radius: 0.2em;
+}
+
+.checkbox_wrapper {
+  margin-bottom: 1.2em;
+}
+
+.buttons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+
+.buttons_one {
+  border-radius: 0.2em;
+  background: #dc3545 !important;
+  text-decoration: none;
+  color: white;
+  padding: 1em;
+}
+
+.buttons_two {
+  border-radius: 0.2em;
+  background: #007bff !important;
+  text-decoration: none;
+  color: white;
+  padding: 1em;
+  margin-right: 0.3em;
+}
+
+.buttons button {
+  border-radius: 0.2em;
+  background: #007bff;
+  color: white;
+  padding: 1em;
+  border: none;
+  width: 5em;
+  margin-right: 0.3em;
+  font-family: sans-serif;
+}
+/*# sourceMappingURL=courseList.css.map */

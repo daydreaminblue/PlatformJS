@@ -1,0 +1,112 @@
+<section class="slice slice-lg bg-section-light">
+  <div class="container">
+    <!-- Row -->
+    <div class="course-title">
+      <h2 class="mt-4">سبد خرید</h2>
+      <h4 class="mt-3">تعداد سفارش ها : <%= ordersAlt.total %></h4>
+    </div>
+
+    <div class="row mt-4 mb-5 mr-1">
+      <a href="/cart/pay-all">
+        <span class="btn-inner--text btn btn-primary btn-icon">پرداخت همه</span>
+      </a>
+    </div>
+
+    <%if (ordersAlt.total > 0) { %> <% if(ordersAlt.total > 1) { %>
+    <div class="row mt-5 justify-content-center">
+      <% } else { %>
+      <div class="row mt-5 justify-content-start">
+        <% } %>
+        <!-- Course -->
+        <% orders.forEach(order => { %>
+        <div class="col-md-4">
+          <div class="card card-setted-height">
+            <div class="card-body pb-5 d-flex flex-column">
+              <div class="pt-4 pb-5">
+                <img
+                  src="<%= order.course.thumb %>"
+                  class="img-fluid img-center"
+                  style="height: 150px"
+                  alt="<%= order.course.title %>"
+                />
+              </div>
+              <div>
+                <a href="<%= order.course.path() %>">
+                  <h5 class="h4 lh-130 mb-3 tar">
+                    <%= order.course.title %>
+                  </h5></a
+                >
+              </div>
+              <div class="course-subcontent">
+                <p class="text-muted mb-0 tar">
+                  <%= order.course.body.substr(0,40) %>
+                </p>
+              </div>
+              <!-- Buttons -->
+              <div class="d-flex flex-column justify-content-around" style="height: 6em;">
+                <div class="row">
+                  <div class="col-lg-6">
+                    <a href="<%= order.course.path() %>">
+                      <span
+                        class="badge badge-soft-success badge-pill badge-lg"
+                      >
+                        مشاهده
+                      </span>
+                    </a>
+                  </div>
+                  <div class="col-lg-6">
+                    <span class="badge badge-soft-show badge-pill badge-lg">
+                      قیمت : <%= order.course.price %>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-lg-6">
+                    <form action="/cart/<%= order._id %>" method="post">
+                      <button
+                        type="submit"
+                        style="border: 0; background: transparent"
+                      >
+                        <span
+                          class="badge badge-soft-success badge-pill badge-lg"
+                        >
+                          پرداخت
+                        </span>
+                      </button>
+                    </form>
+                  </div>
+                  <div class="col-lg-6">
+                    <form
+                      action="/cart/<%= order._id %>?_method=DELETE"
+                      method="post"
+                    >
+                      <button
+                        type="submit"
+                        style="border: 0; background: transparent"
+                      >
+                        <span class="badge badge-soft-show badge-pill badge-lg">
+                          حذف
+                        </span>
+                      </button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+              <!--  -->
+            </div>
+          </div>
+        </div>
+        <% }) %>
+        <!-- Course -->
+        <% if(ordersAlt.total > 1) { %>
+      </div>
+      <% } else { %>
+    </div>
+    <% } %> <% } else { %>
+    <p class="tar">سفارشی موجود نیست</p>
+    <% } %>
+    <!-- Row -->
+    <%- include(viewPath('layouts/pagination') ,{ pagination : ordersAlt}) %>
+  </div>
+</section>

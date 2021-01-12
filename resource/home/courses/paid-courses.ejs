@@ -1,0 +1,62 @@
+<section class="slice slice-lg bg-section-light">
+  <div class="container">
+    <!-- Row -->
+    <div class="course-title">
+      <h2 class="mt-4">دوره های خریداری شده</h2>
+    </div>
+    <%if (ordersAlt.total > 0) { %> <% if(ordersAlt.total > 1) { %>
+    <div class="row mt-5 justify-content-center">
+      <% } else { %>
+      <div class="row mt-5 justify-content-start">
+        <% } %>
+        <!-- Course -->
+        <% orders.forEach(order => { %>
+        <div class="col-md-4">
+          <div class="card card-setted-height">
+            <div class="card-body pb-5">
+              <div class="pt-4 pb-5">
+                <img
+                  src="<%= order.course.thumb %>"
+                  class="img-fluid img-center"
+                  style="height: 150px"
+                  alt="<%= order.course.title %>"
+                />
+              </div>
+              <a href="<%= order.course.path() %>">
+                <h5 class="h4 lh-130 mb-3 tar"><%= order.course.title %></h5></a
+              >
+              <div class="course-subcontent">
+                <p class="text-muted mb-0 tar">
+                  <%= order.course.body.substr(0,40) %>
+                </p>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <a href="<%= order.course.path() %>">
+                    <span class="badge badge-soft-show badge-pill badge-lg">
+                      مشاهده
+                    </span>
+                  </a>
+                </div>
+                <div class="col-lg-6">
+                  <span class="badge badge-soft-success badge-pill badge-lg">
+                    قیمت : <%= order.course.price %>
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+        <!-- Course -->
+        <% if(ordersAlt.total > 1) { %>
+      </div>
+      <% } else { %>
+    </div>
+    <% } %> <% } else { %>
+    <p class="tar">دوره ای موجود نیست</p>
+    <% } %>
+    <!-- Row -->
+    <%- include(viewPath('layouts/pagination') ,{ pagination : ordersAlt}) %>
+  </div>
+</section>

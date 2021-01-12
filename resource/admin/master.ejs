@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, shrink-to-fit=no"
+    />
+    <meta name="description" content="" />
+    <meta name="author" content="Webpixels" />
+    <title><%- defineContent('title') || 'پنل ادمین' %></title>
+    <!-- Preloader -->
+    <style>
+      @keyframes hidePreloader {
+        0% {
+          width: 100%;
+          height: 100%;
+        }
+
+        100% {
+          width: 0;
+          height: 0;
+        }
+      }
+
+      body > div.preloader {
+        position: fixed;
+        background: white;
+        width: 100%;
+        height: 100%;
+        z-index: 1071;
+        opacity: 0;
+        transition: opacity 0.5s ease;
+        overflow: hidden;
+        pointer-events: none;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      body:not(.loaded) > div.preloader {
+        opacity: 1;
+      }
+
+      body:not(.loaded) {
+        overflow: hidden;
+      }
+
+      body.loaded > div.preloader {
+        animation: hidePreloader 0.5s linear 0.5s forwards;
+      }
+    </style>
+    <script>
+      window.addEventListener('load', function () {
+        setTimeout(function () {
+          document.querySelector('body').classList.add('loaded')
+        }, 300)
+      })
+    </script>
+    <!-- Favicon -->
+    <link
+      rel="icon"
+      href="/home/assets/img/brand/favicon.png"
+      type="image/png"
+    />
+    <!-- Font Awesome -->
+    <link
+      rel="stylesheet"
+      href="/home/assets/libs/@fortawesome/fontawesome-free/css/all.min.css"
+    />
+    <!-- Quick CSS -->
+    <link rel="stylesheet" href="/resources/styles/dashboard.css" />
+    <link
+      rel="stylesheet"
+      href="/home/assets/css/quick-website.css"
+      id="stylesheet"
+    />
+    <%- style %> <%- script %>
+  </head>
+  <body>
+    <!-- Preloader -->
+    <div class="preloader">
+      <div class="spinner-border text-primary" role="status">
+        <span class="sr-only">در حال بارگذاری ...</span>
+      </div>
+    </div>
+
+    <div class="mainAdminWrapper">
+      <div class="main_wrapper bg-dark-admin" id="myWrapper">
+        <div class="right_side">
+          <div class="sidenav" id="mySidenav">
+            <div class="sidenav__header">
+              <div class="sidenav__header__avatar">
+                <img src="/resources/images/avatar.png" />
+              </div>
+              <div style="align-items: center">
+                <p class="white-color mb-0 mt-0 lead">
+                  سلام <%= req.user.name %>
+                </p>
+              </div>
+            </div>
+
+            <% if(req.user.admin) { %>
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="pie-chart"></i>
+              </div>
+              <a
+                href="/admin/admin-report"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+                >گزارش آماری</a
+              >
+            </div>
+            <% } %> <% if(req.user.admin || req.user.isTeacher) { %>
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="plus"></i>
+              </div>
+              <a
+                href="/admin/courses/create"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+                >اضافه کردن دوره</a
+              >
+            </div>
+
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="book"></i>
+              </div>
+              <a
+                href="/admin/courses"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+                >لیست دوره ها</a
+              >
+            </div>
+
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="plus"></i>
+              </div>
+              <a
+                href="/admin/episodes/create"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+                >اضافه کردن قسمت</a
+              >
+            </div>
+
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="video"></i>
+              </div>
+              <a
+                href="/admin/episodes/"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+                >لیست قسمت ها</a
+              >
+            </div>
+            <% } %> <% if(req.user.admin) { %>
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="plus"></i>
+              </div>
+              <a
+                href="/admin/categories/create"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+                >اضافه کردن دسته</a
+              >
+            </div>
+
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="menu"></i>
+              </div>
+              <a
+                href="/admin/categories"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+                >لیست دسته ها</a
+              >
+            </div>
+
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="message-square"></i>
+              </div>
+              <a
+                href="/admin/comments/approved"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+                >لیست نظرات</a
+              >
+            </div>
+
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="message-circle"></i>
+              </div>
+              <a
+                href="/admin/comments"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+                >نظرات تایید شده</a
+              >
+            </div>
+
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="user"></i>
+              </div>
+              <a
+                href="/admin/teachers"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+                >مدرس ها</a
+              >
+            </div>
+
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="user"></i>
+              </div>
+              <a
+                href="/admin/teachers/approved"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+              >
+                مدرس های بررسی نشده</a
+              >
+            </div>
+
+            <div class="sidenav__row">
+              <div class="sidenav__row_icon">
+                <i data-feather="shopping-bag"></i>
+              </div>
+              <a
+                href="/admin/orders"
+                class="white-color mb-0 mt-0 nav-link lead sidebar__item_border"
+                >لیست سفارش ها</a
+              >
+            </div>
+            <% } %>
+            <div id="transition_one"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="mainAdminLeftSide bg-gray-dark-admin">
+        <!-- Navbar -->
+        <nav class="navbar navbar-expand-lg navbar-light bg-gray-dark-admin">
+          <div class="container">
+            <!-- Brand -->
+            <a class="navbar-brand" href="/">
+              <img alt="logo" src="/home/assets/img/brand/logo-light.png" />
+            </a>
+            <!-- Collapse -->
+            <div class="collapse navbar-collapse" id="navbarCollapse">
+              <ul class="navbar-nav mt-4 mt-lg-0 ml-auto">
+                <li class="nav-item">
+                  <a class="nav-link" href="/admin"
+                    ><p class="white-color mb-0 mt-0">داشبورد</p></a
+                  >
+                </li>
+                <li class="nav-item">
+                  <a class="nav-link" href="/logout"
+                    ><p class="white-color mb-0 mt-0">خروج</p></a
+                  >
+                </li>
+              </ul>
+            </div>
+          </div>
+        </nav>
+        <%- body %>
+      </div>
+    </div>
+
+    <!-- Core JS  -->
+    <script src="/home/assets/libs/jquery/dist/jquery.min.js"></script>
+    <script src="/home/assets/libs/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="/home/assets/libs/svg-injector/dist/svg-injector.min.js"></script>
+    <script src="/home/assets/libs/feather-icons/dist/feather.min.js"></script>
+    <!-- Quick JS -->
+    <script src="/home/assets/js/quick-website.js"></script>
+    <!-- Feather Icons -->
+    <script>
+      feather.replace({
+        width: '1em',
+        height: '1em',
+      })
+    </script>
+  </body>
+</html>

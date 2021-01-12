@@ -1,0 +1,8 @@
+<% let flag = false %> <% if(errors.length > 0) { %> <% flag = true %>
+<div class="errors_container" id="errorsContainer">
+  <div class="errors_container_content">
+    <% errors.forEach(error => { %> <%= error %><br />
+    <% }) %>
+  </div>
+</div>
+<% } %>

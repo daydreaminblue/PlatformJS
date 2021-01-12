@@ -1,0 +1,66 @@
+<link rel="stylesheet" href="/resources/styles/list.css" />
+
+<div style="display: flex; margin-right: 9em">
+  <a href="/admin/comments" class="btn btn-sm btn-primary"
+    >کامنت های تایید شده</a
+  >
+</div>
+
+<div class="left_side">
+  <div class="table" id="myTable">
+    <div class="table__options">
+      <p>نام ارسال کننده</p>
+      <p>مطلب</p>
+      <p>عملیات</p>
+    </div>
+
+    <div class="table__no__wrapper">
+      <% let count = 0 %> <% comments.forEach(comment => { %><% count = count +
+      1 %>
+
+      <div class="table__no flex-column">
+        <div class="d-flex w-100">
+          <p><%= comment.user.name %></p>
+          <p>
+            <% if(comment.course) { %>
+            <a href="<%= comment.course.path() %>"
+              ><%= comment.course.title %></a
+            >
+            <% } else if(comment.episode) { %>
+            <a href="<%= comment.episode.path() %>"
+              ><%= comment.episode.title %></a
+            >
+            <% } %>
+          </p>
+
+          <div class="table__no-actions flexOne">
+            <div class="buttons">
+              <form
+                action="/admin/comments/<%= comment.id %>/approved?_method=PUT"
+                method="post"
+                class="d-flex"
+              >
+                <button type="submit" class="buttons_two">تایید</button>
+              </form>
+              <form
+                action="/admin/comments/<%= comment.id %>?_method=DELETE"
+                method="post"
+                class="d-flex"
+              >
+                <button type="submit" class="buttons_one">رد</button>
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="mt-4 w-100">
+          <p class="tar text-muted">متن نظر : <%= comment.comment %></p>
+        </div>
+      </div>
+      <% if(count != comments.length) {%>
+      <hr />
+      <% } %> <% }) %>
+    </div>
+
+    <%- include(viewPath('layouts/pagination') ,{ pagination : commentsAlt}) %>
+  </div>
+</div>

@@ -1,0 +1,328 @@
+<style>
+  .shape-line {
+    display: none;
+  }
+</style>
+
+<!-- Main content -->
+<section class="slice py-7">
+  <div class="container">
+    <div class="row row-grid align-items-center">
+      <div class="col-12 col-md-5 col-lg-6 order-md-2 text-center">
+        <!-- Image -->
+        <figure class="w-100">
+          <img
+            alt="Image placeholder"
+            src="/home/assets/img/svg/illustrations/illustration-3.svg"
+            class="img-fluid mw-md-120"
+          />
+        </figure>
+      </div>
+      <div class="col-12 col-md-7 col-lg-6 order-md-1 pr-md-5">
+        <!-- Heading -->
+        <h1 class="display-4 text-center text-md-left mb-3">
+          پلتفرم آموزش آنلاین
+        </h1>
+        <h1 class="display-4 text-center text-md-left mb-3">
+          <strong class="text-primary">یادگیری را آغاز کنید</strong>
+        </h1>
+        <!-- Text -->
+        <p class="lead text-center text-md-left text-muted">
+          پلتفرم آموزش آنلاین بستر اینترنتی است که با هدف توسعه آموزش از طریق
+          .اینترنت، دوره‌های آموزشی متعددی را در اختیار علاقمندان قرار می‌دهد
+        </p>
+        <!-- Buttons -->
+        <div class="text-center text-md-left mt-5">
+          <a
+            href="/mostViewedCourses"
+            class="btn btn-primary btn-icon"
+            target="_blank"
+          >
+            <span class="btn-inner--text">پربازدید ترین دروس</span>
+            <span class="btn-inner--icon"
+              ><i data-feather="chevron-right"></i
+            ></span>
+          </a>
+          <a
+            href="/about-us"
+            class="btn btn-neutral btn-icon d-none d-lg-inline-block"
+            target="_blank"
+            >درباره ما</a
+          >
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Courses -->
+<% if(categories.length > 0) { %>
+<section class="slice slice-lg bg-section-light">
+  <div class="container">
+    <!-- Row -->
+    <% categories.forEach(cat => { %> <%if (cat.courses.length > 0) { %>
+    <div class="course-title">
+      <h2 class="mt-4"><%= cat.name %></h2>
+    </div>
+    <% if(cat.courses.length > 1) { %>
+    <div class="row mt-5 justify-content-center">
+      <% } else { %>
+      <div class="row mt-5 justify-content-start">
+        <% } %>
+        <!-- Course -->
+        <% cat.courses.forEach(course => { %>
+        <div class="col-md-4">
+          <div class="card card-setted-height">
+            <div class="card-body pb-5">
+              <div class="pt-4 pb-5">
+                <img
+                  src="<%= course.thumb %>"
+                  class="img-fluid img-center"
+                  style="height: 150px"
+                  alt="<%= course.title %>"
+                />
+              </div>
+              <a href="<%= course.path() %>">
+                <h5 class="h4 lh-130 mb-3 tar"><%= course.title %></h5></a
+              >
+              <div class="course-subcontent">
+                <p class="text-muted mb-0 tar">
+                  <%= course.body.substr(0,40) %>
+                </p>
+              </div>
+              <div class="row">
+                <div class="col-lg-6">
+                  <a href="<%= course.path() %>">
+                    <span class="badge badge-soft-show badge-pill badge-lg">
+                      مشاهده
+                    </span>
+                  </a>
+                </div>
+                <div class="col-lg-6">
+                  <span class="badge badge-soft-success badge-pill badge-lg">
+                    قیمت : <%= course.price %> ت
+                  </span>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <% }) %>
+
+        <a href="<%= cat.path() %>">
+          <img
+            alt="show-more"
+            src="/home/assets/img/brand/show-more.png"
+            width="100px"
+            height="100px"
+            class="mr-5"
+            style="margin-top: 12em"
+          />
+        </a>
+        <!-- Course -->
+        <% if(cat.courses.length > 1) { %>
+      </div>
+      <% } else { %>
+    </div>
+    <% } %> <% } %>
+    <!-- Row -->
+    <% }) %>
+    <div class="row w-100 d-flex justify-content-center align-items-center">
+      <div>
+        <a href="/categories">
+          <span class="badge badge-primary badge-pill p-3"
+            >مشاهده تمامی دروس بر اساس دسته ها</span
+          ></a
+        >
+      </div>
+    </div>
+  </div>
+</section>
+<% }%>
+
+<!-- Off -->
+<% if(offedCourses.length > 0) { %>
+<section class="slice slice-lg pt-lg-6 pb-0 pb-lg-6 bg-section-secondary">
+  <!-- Container -->
+  <div class="container position-relative zindex-100">
+    <div class="col">
+      <div class="row justify-content-center">
+        <div class="col-md-10 text-center">
+          <div class="mt-4 mb-6">
+            <h2 class="h1 text-white">دروس تخفیف خورده</h2>
+            <h4 class="text-white mt-3">هم اکنون بشتابید</h4>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+<section class="slice pt-0">
+  <div class="container position-relative zindex-100">
+    <div class="row">
+      <% let count = 0 %> <% offedCourses.forEach(course => { %> <% count =
+      count + 1 %> <% if(count>3){ %>
+      <div class="col-xl-4 col-md-12 col-sm-6">
+        <% } else {%>
+        <div class="col-xl-4 col-md-12 col-sm-6 mt-xl-n7">
+          <% } %>
+          <div class="card">
+            <div class="d-flex p-5 tar flex-column-reverse">
+              <div>
+                <span class="badge badge-danger badge-pill"
+                  ><%= course.offPercentage %>%</span
+                >
+                <span
+                  class="badge badge-warning badge-pill"
+                  style="text-decoration: line-through"
+                  ><%= course.lastPrice %> تومان</span
+                >
+                <span class="badge badge-dark badge-pill"
+                  ><%= course.price %> تومان</span
+                >
+              </div>
+              <div class="pl-3 mb-3">
+                <a href="<%= course.path() %>">
+                  <h5 class="lh-130"><%= course.title %></h5>
+                </a>
+                <p class="text-muted mb-0"><%= course.body.substr(0,30) %></p>
+              </div>
+            </div>
+          </div>
+          <% if(count>3){ %>
+        </div>
+        <% } else {%>
+      </div>
+      <% } %> <% }) %>
+    </div>
+  </div>
+</section>
+<% } %>
+
+<!-- Report -->
+
+<% if(offedCourses.length == 0) { %>
+<section class="slice slice-lg pt-lg-6 pb-0 pb-lg-6 bg-section-secondary">
+  <% } else {%>
+  <section class="slice slice-lg">
+    <% } %>
+    <div class="container">
+      <div class="row">
+        <div class="col-lg-6 mb-5 centerResponsive">
+          <span class="badge badge-primary badge-pill">گزارش آماری</span>
+        </div>
+      </div>
+      <!-- Features -->
+      <div class="row mx-lg-n4">
+        <!-- Features - Col 1 -->
+        <div class="col-lg-4 col-md-6 px-lg-4">
+          <div class="card shadow-none">
+            <div class="p-3 d-flex">
+              <div>
+                <div
+                  class="icon icon-shape rounded-circle bg-warning text-white mr-4"
+                >
+                  <i data-feather="check"></i>
+                </div>
+              </div>
+              <div class="states-text">
+                <span class="h6">تعداد دروس</span>
+                <p class="text-sm text-muted mb-0"><%= coursesCount %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 px-lg-4">
+          <div class="card shadow-none">
+            <div class="p-3 d-flex">
+              <div>
+                <div
+                  class="icon icon-shape rounded-circle bg-primary text-white mr-4"
+                >
+                  <i data-feather="check"></i>
+                </div>
+              </div>
+              <div class="states-text">
+                <span class="h6">تعداد موضوعات ارائه شده</span>
+                <p class="text-sm text-muted mb-0">
+                  <%= categoriesAlt.total %>
+                </p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="col-lg-4 col-md-6 px-lg-4">
+          <div class="card shadow-none">
+            <div class="p-3 d-flex">
+              <div>
+                <div
+                  class="icon icon-shape rounded-circle bg-danger text-white mr-4"
+                >
+                  <i data-feather="check"></i>
+                </div>
+              </div>
+              <div class="states-text">
+                <span class="h6">تعداد دروس خریداری شده</span>
+                <p class="text-sm text-muted mb-0"><%= ordersCount %></p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <% if(offedCourses.length > 0) { %>
+  </section>
+  <% } %> <% if(offedCourses.length == 0) { %>
+</section>
+<% } %>
+
+<!-- Teaching -->
+<section class="slice slice-lg p-3 bg-section-secondary">
+  <!-- Container -->
+  <div class="container position-relative zindex-100 mw-100">
+    <div class="col">
+      <div class="row justify-content-center">
+        <div class="col-md-10 text-center">
+          <h2 class="h1 text-white">مدرس شوید</h2>
+          <!--  -->
+          <div class="container">
+            <div class="row row-grid align-items-center">
+              <div class="col-12 col-md-5 col-lg-6 order-md-2 text-center">
+                <!-- Image -->
+                <figure class="w-100">
+                  <img
+                    alt="Image placeholder"
+                    src="/home/assets/img/svg/illustrations/instructor.svg"
+                    class="img-fluid mw-md-75"
+                  />
+                </figure>
+              </div>
+              <div class="col-12 col-md-7 col-lg-6 order-md-1 pr-md-5">
+                <!-- Heading -->
+                <p class="display-5 tar white-color" id="teacherInviteText">
+                  عضویت در هیات علمی و تدریس در پلتفرم آموزش آنلاین ، تدریس برای
+                  آرمان «دانش بدون مرز» است. در صورت تمایل به همکاری آموزشی،
+                  تدریس و ارایه آموزش در پلتفرم آموزش آنلاین و پیوستن به آن به
+                  عنوان عضو هیات علمی، به لینک زیر مراجعه نمایید.
+                </p>
+                <div class="tar">
+                  <a
+                    href="/teacher"
+                    class="btn btn-primary btn-icon"
+                    target="_blank"
+                  >
+                    <span class="btn-inner--text">اطلاعات بیشتر</span>
+                    <span class="btn-inner--icon"
+                      ><i data-feather="chevron-right"></i
+                    ></span>
+                  </a>
+                </div>
+              </div>
+            </div>
+          </div>
+          <!--  -->
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

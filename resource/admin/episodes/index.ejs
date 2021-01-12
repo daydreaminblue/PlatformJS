@@ -1,0 +1,43 @@
+<link rel="stylesheet" href="/resources/styles/list.css" />
+
+<div class="left_side">
+  <div class="table" id="myTable">
+    <div class="table__options">
+      <p>عنوان دوره</p>
+      <p>آموزش مربوطه</p>
+      <p>عملیات</p>
+    </div>
+
+    <div class="table__no__wrapper">
+      <% episodes.forEach(episode => { %>
+      <div class="table__no">
+        <p><%= episode.title %></p>
+        <p><%= episode.course.title %></p>
+        <div class="table__no-actions flexOne">
+          <div class="buttons">
+            <a
+              href="<%= episode.path(episode.course.path()) %>"
+              class="buttons_two"
+              >مشاهده</a
+            >
+            <a
+              href="/admin/episodes/<%= episode._id %>/edit"
+              class="buttons_two"
+              >ویرایش</a
+            >
+            <form
+              action="/admin/episodes/<%= episode._id %>?_method=DELETE"
+              method="post"
+            >
+              <button type="submit" class="buttons_one">حذف</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <% }) %>
+    </div>
+
+    <%- include(viewPath('layouts/pagination') ,{ pagination : episodesAlt }) %>
+  </div>
+</div>

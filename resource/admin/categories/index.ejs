@@ -1,0 +1,56 @@
+<link rel="stylesheet" href="/resources/styles/list.css" />
+
+<style>
+  .table__options p:nth-child(n) {
+    flex-basis: calc(100% / 4) !important;
+  }
+  .table__no p:nth-child(n) {
+    flex-basis: calc(100% / 4) !important;
+  }
+</style>
+
+<div class="left_side">
+  <div class="table" id="myTable">
+    <div class="table__options">
+      <p>نام دسته</p>
+      <p>نوع</p>
+      <p>تعداد دوره ها</p>
+      <p style="margin-right: -3.75rem !important">عملیات</p>
+    </div>
+
+    <div class="table__no__wrapper">
+      <% categories.docs.forEach(category => { %>
+
+      <div class="table__no flex-nowrap">
+        <p><%= category.name %></p>
+        <p><%= category.parent ? category.parent.name : 'دسته اصلی' %></p>
+        <p><%= category.courses.length %></p>
+        <div
+          class="table__no-actions flexOne"
+          style="flex-basis: 42% !important; margin-right: -8em"
+        >
+          <div class="buttons">
+            <a href="/admin<%= category.path() %>/courses" class="buttons_two"
+              >مشاهده دوره ها</a
+            >
+            <a
+              href="/admin/categories/<%= category.id %>/edit"
+              class="buttons_two"
+              >ویرایش</a
+            >
+            <form
+              action="/admin/categories/<%= category.id %>?_method=DELETE"
+              method="post"
+            >
+              <button type="submit" class="buttons_one">حذف</button>
+            </form>
+          </div>
+        </div>
+      </div>
+
+      <% }) %>
+    </div>
+
+    <%- include(viewPath('layouts/pagination') ,{ pagination : categories}) %>
+  </div>
+</div>

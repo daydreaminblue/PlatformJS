@@ -1,0 +1,451 @@
+<style>
+  .fill-section-secondary {
+    fill: #171347 !important;
+  }
+</style>
+<script>
+  function init() {
+    for (
+      let i = 0;
+      i < document.getElementsByClassName('description').length;
+      i++
+    ) {
+      document.getElementsByClassName('description')[i].style.display = 'none'
+    }
+    document.getElementById('courseDescription').style.display = 'none'
+    document.getElementById('courseVideo').style.display = 'none'
+  }
+
+  function toggleCourseDescription() {
+    if (document.getElementById('courseDescription').style.display !== 'none') {
+      document.getElementById('courseDescription').style.display = 'none'
+      document.getElementById('courseDescriptionButton').innerText =
+        'مشاهده توضیحات'
+    } else {
+      document.getElementById('courseDescription').style.display = 'block'
+      document.getElementById('courseDescriptionButton').innerText =
+        'بستن توضیحات'
+    }
+  }
+
+  function toggleCourseVideo() {
+    if (document.getElementById('courseVideo').style.display !== 'none') {
+      document.getElementById('courseVideo').style.display = 'none'
+      document.getElementById('courseVideoButton').innerText =
+        'مشاهده ویدیو چکیده'
+    } else {
+      document.getElementById('courseVideo').style.display = 'block'
+      document.getElementById('courseVideoButton').innerText =
+        'بستن ویدیو چکیده'
+    }
+  }
+
+  function toggleBookmark() {
+    if (document.getElementById('bookmark').style.display !== 'none') {
+      document.getElementById('bookmark').src =
+        '/home/assets/img/brand/bookmark.png'
+    } else {
+      document.getElementById('bookmark').src =
+        '/home/assets/img/brand/bookmarked.png'
+    }
+  }
+
+  function toggleLike() {
+    if (document.getElementById('like').style.display !== 'none') {
+      document.getElementById('like').src = '/home/assets/img/brand/like.png'
+    } else {
+      document.getElementById('like').src = '/home/assets/img/brand/liked.png'
+    }
+  }
+
+  function showDescription(id) {
+    // if (document.getElementById(id).style.display !== 'none') {
+    //   document.getElementById(id).style.width = '0'
+    //   document.getElementById(id).style.display = 'none'
+    // } else {
+    //   document.getElementById(id).style.display = 'block'
+    //   document.getElementById(id).style.width = '250px'
+    // }
+  }
+</script>
+
+<body onload="init()">
+  <section class="slice py-7">
+    <div class="container">
+      <div class="row row-grid align-items-center" id="courseDetails">
+        <div class="col-12 col-md-5 col-lg-6 order-md-2 text-center">
+          <!-- Image -->
+          <figure class="w-100">
+            <img
+              alt="<%= course.title %>"
+              src="<%= course.thumb %>"
+              class="img-fluid mw-md-120"
+            />
+          </figure>
+        </div>
+        <div class="col-12 col-md-7 col-lg-6 order-md-1 pr-md-5 course-details">
+          <!-- Heading -->
+          <h1 class="display-4 text-center text-md-left mb-3">
+            <strong class="text-primary"><%= course.title %></strong>
+          </h1>
+          <!-- Text -->
+          <p class="lead text-muted tar">
+            چکیده : <%= course.body.substr(0,200) %>
+          </p>
+          <div class="row align-items-center">
+            <img
+              alt="tag"
+              src="/home/assets/img/brand/teacher.png"
+              width="40px"
+              height="40px"
+              class="ml-2"
+            />
+            <p class="lead text-muted mt-0 mb-0 course-details-text">
+              نام مدرس : <%= course.user.name %>
+            </p>
+          </div>
+
+          <div class="row align-items-center">
+            <img
+              alt="tag"
+              src="/home/assets/img/brand/tag.png"
+              width="40px"
+              height="40px"
+              class="ml-2"
+            />
+            <p class="lead text-muted mt-0 mb-0 course-details-text">
+              قیمت : <%= course.price %> تومان
+            </p>
+          </div>
+          <div class="row align-items-center mt-2">
+            <img
+              alt="date"
+              src="/home/assets/img/brand/date.png"
+              width="39px"
+              height="39px"
+              class="ml-2"
+            />
+            <p class="lead text-muted mt-0 mb-0 course-details-text">
+              ارسال شده در <%= date(course.createdAt).format('jD jMMMM jYYYY')
+              %>
+            </p>
+          </div>
+          <div class="row align-items-center mt-2">
+            <img
+              alt="view"
+              src="/home/assets/img/brand/view.png"
+              width="39px"
+              height="39px"
+              class="ml-2"
+            />
+            <p class="lead text-muted mt-0 mb-0 course-details-text">
+              تعداد نمایش : <%= course.viewCount %>
+            </p>
+          </div>
+
+          <div class="row align-items-center mt-2">
+            <img
+              alt="like-count"
+              src="/home/assets/img/brand/like-count.png"
+              width="39px"
+              height="39px"
+              class="ml-2"
+            />
+            <p class="lead text-muted mt-0 mb-0 course-details-text">
+              تعداد پسند ها : <%= course.likesCount %>
+            </p>
+          </div>
+          <div
+            class="enhanced-row align-items-center mt-5"
+            style="
+              width: 100%;
+              justify-content: space-between;
+              flex-direction: row-reverse;
+            "
+          >
+            <% if (auth.check) { %>
+            <div class="row align-items-center">
+              <% if (buyFlag || teacherFlag || episode.isFree) { %> <% if (likeFlag) { %>
+              <form
+                action="/courses/<%= course._id %>/like/destroy"
+                method="post"
+              >
+                <button
+                  type="submit"
+                  style="border: 0; background: transparent"
+                >
+                  <img
+                    alt="like-now"
+                    src="/home/assets/img/brand/liked.png"
+                    width="39px"
+                    height="39px"
+                    id="like"
+                    class="ml-2"
+                  />
+                </button>
+              </form>
+              <% } else { %>
+              <form action="/courses/<%= course._id %>/like" method="post">
+                <button
+                  type="submit"
+                  style="border: 0; background: transparent"
+                >
+                  <img
+                    alt="like-now"
+                    src="/home/assets/img/brand/like.png"
+                    width="39px"
+                    height="39px"
+                    id="like"
+                    class="ml-2"
+                  />
+                </button>
+              </form>
+              <% } %> <% } %>
+              <!--  -->
+              <% if (bookmarkFlag) { %>
+              <form
+                action="/courses/<%= course._id %>/bookmark/destroy"
+                method="post"
+              >
+                <button
+                  type="submit"
+                  style="border: 0; background: transparent"
+                >
+                  <img
+                    alt="bookmark-now"
+                    src="/home/assets/img/brand/bookmarked.png"
+                    width="39px"
+                    height="39px"
+                    id="bookmark"
+                    class="ml-2"
+                  />
+                </button>
+              </form>
+              <% } else { %>
+              <form action="/courses/<%= course._id %>/bookmark" method="post">
+                <button
+                  type="submit"
+                  style="border: 0; background: transparent"
+                >
+                  <img
+                    alt="bookmark-now"
+                    src="/home/assets/img/brand/bookmark.png"
+                    width="39px"
+                    height="39px"
+                    id="bookmark"
+                    class="ml-2"
+                  />
+                </button>
+              </form>
+              <% } %>
+            </div>
+            <div class="row align-items-center">
+              <% if(!buyFlag && inCartFlag) {%>
+              <p class="lead text-muted mt-0 mb-0 course-details-text">
+                این درس در سبد خرید شما موجود می باشد
+              </p>
+              <% } %> <% if(buyFlag) {%>
+              <p class="lead text-muted mt-0 mb-0 course-details-text">
+                شما این درس را خریداری کردید
+              </p>
+              <% } %> 
+              <!-- <% if(teacherFlag) {%>
+              <p class="lead text-muted mt-0 mb-0 course-details-text">
+                شما به عنوان مدرس به این درس دسترسی دارید
+              </p>
+              <% } %> -->
+               <!-- <% if(!inCartFlag && !buyFlag && !teacherFlag) {%> -->
+              <!-- <% } %> --> 
+               <% if(!inCartFlag && !buyFlag) {%>
+              <form action="/courses/<%= course._id %>" method="post">
+                <button
+                  type="submit"
+                  style="border: 0; background: transparent"
+                >
+                  <img
+                    alt="add-now"
+                    src="/home/assets/img/brand/add.png"
+                    width="39px"
+                    height="39px"
+                    id="add"
+                    class="ml-2"
+                  />
+                </button>
+              </form>
+              <% } %>
+            </div>
+
+            <% } else { %>
+            <p
+              class="lead text-muted mt-0 mb-0 course-details-text tar"
+              style="width: 100%"
+            >
+              برای خرید درس / نمایش اطلاعات بیشتر ورود / ثبت نام کنید.
+            </p>
+            <% } %>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <% if(course.episodes.length > 0) {%> <% let count = 1 %>
+  <section class="slice slice-lg pt-lg-6 pb-0 pb-lg-6 bg-section-secondary">
+    <!-- Container -->
+    <div class="container position-relative zi-100">
+      <div class="col">
+        <div class="row justify-content-center">
+          <div class="col-md-10 text-center">
+            <div class="mt-4 mb-6">
+              <h2 class="h1 text-white">قسمت های مختلف درس</h2>
+              <h4 class="text-white mt-3">
+                تعداد قسمت ها : <%= course.episodes.length %>
+              </h4>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-5 mr-1">
+        <span
+          class="btn btn-primary btn-icon"
+          onclick="toggleCourseDescription()"
+          id="courseDescriptionButton"
+          >مشاهده توضیحات</span
+        >
+        <% if(course.video) { %>
+        <span
+          class="btn btn-primary btn-icon mr-3"
+          onclick="toggleCourseVideo()"
+          id="courseVideoButton"
+          >مشاهده ویدیو چکیده</span
+        >
+        <% } %>
+      </div>
+      <p class="lead white-color tar" id="courseDescription">
+        چکیده : <%= course.body %>
+      </p>
+
+      <div
+        class="bg-gray-dark episode targetEpisode flex-column"
+        id="courseVideo"
+      >
+        <div class="enhanced-row justify-content-center flexOne">
+          <video width="700" controls>
+            <source src="<%= course.video %>" type="video/mp4" />
+            Your browser does not support HTML video.
+          </video>
+        </div>
+      </div>
+
+      <% if(targetEpisode && (buyFlag || teacherFlag || episode.isFree)) { %>
+      <div class="bg-gray-dark episode targetEpisode flex-column">
+        <h3 class="lead white-color tar mt-3 mb-4">
+          شما ویدیوی قسمت
+          <span class="badge badge-secondary mr-2 ml-2">
+            <%= targetEpisode.title %>
+          </span>
+          را برای تماشا انتخاب کردید
+        </h3>
+
+        <div class="enhanced-row justify-content-center flexOne">
+          <video width="700" controls>
+            <source src="<%= targetEpisode.video %>" type="video/mp4" />
+            Your browser does not support HTML video.
+          </video>
+        </div>
+      </div>
+      <% } %>
+      <!--  -->
+      <% course.episodes.forEach(episode => { %>
+      <div class="episode">
+        <div class="enhanced-row">
+          <div>
+            <div
+              class="icon icon-shape rounded-circle bg-warning text-white mr-4"
+              style="width: 4rem; height: 4rem"
+            >
+              <% if(buyFlag || teacherFlag || episode.isFree) {%>
+              <p class="mt-0 mb-0"><%= count %></p>
+              <% } else { %>
+              <img
+                alt="lock"
+                src="/home/assets/img/brand/lock.png"
+                width="39px"
+                height="39px"
+              />
+              <% } %>
+            </div>
+          </div>
+          <div class="mr-4" style="display: flex; justify-content: start">
+            <p class="mt-0 mb-0 ml-2"><%= episode.title %></p>
+            <% if(buyFlag || teacherFlag || episode.isFree) { %>
+            <a href="<%= episode.path(course.path()) %>">
+              <span class="badge badge-dark"> مشاهده </span></a
+            >
+            <% } %>
+          </div>
+        </div>
+
+        <% if(auth.check) { %>
+        <div
+          class="enhanced-row justify-content-between"
+          style="flex-basis: 20%"
+        >
+          <% } else { %>
+          <div
+            class="enhanced-row justify-content-around"
+            style="flex-basis: 10%"
+          >
+            <% } %>
+            <div onclick="showDescription()">
+              <img
+                alt="down-button"
+                src="/home/assets/img/brand/down-button.png"
+                width="39px"
+                height="39px"
+                class="ml-2"
+              />
+            </div>
+            <% if(buyFlag || teacherFlag || episode.isFree) {%>
+            <a
+              href="<%= episode.video %>"
+              class="btn btn-primary btn-icon"
+              target="_blank"
+            >
+              <span class="btn-inner--text">دانلود</span>
+            </a>
+            <% } else if(auth.check) { %>
+            <form action="/courses/<%= course._id %>" method="post">
+              <button type="submit" class="btn btn-primary btn-icon">
+                خرید
+              </button>
+            </form>
+            <% } %>
+          </div>
+
+          <div class="description" id="<%= episode._id %>">
+            توضیحات : <%= episode.body %>
+          </div>
+          <% if(auth.check) { %>
+        </div>
+        <% } else { %>
+      </div>
+      <% } %> <% count = count + 1 %> <% }) %>
+    </div>
+  </section>
+  <% } %>
+</body>
+
+<!-- Comments Form -->
+<%- include(viewPath('layouts/comments') , { subject : course , comments :
+course.comments , user}) -%>
+
+<script>
+  // function init() {
+  //   if (document.getElementById('commentInput').value)
+  //     document.getElementById('commentInput').value = ''
+  // }
+  console.log(document.getElementById('commentInput').value)
+    if(document.getElementById('commentInput').value)
+    console.log('hhhhh')
+</script>

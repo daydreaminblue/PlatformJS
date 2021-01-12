@@ -1,0 +1,158 @@
+<link rel="stylesheet" href="/resources/styles/form.css" />
+
+<div class="left_side">
+  <div class="container d-flex flex-column">
+    <div class="row align-items-center justify-content-center min-vh-100">
+      <div class="col-md-6 col-lg-5 col-xl-5 py-6 py-md-0">
+        <div
+          class="card shadow zindex-100 mb-0"
+          style="
+            width: 40em;
+            margin-left: 34em;
+            background-color: #24252a;
+            box-shadow: 0 0 1.25rem #24252a;
+            border: 0;
+          "
+        >
+          <div class="card-body px-md-5 py-5">
+            <div class="mb-1">
+              <h6 class="h3 tar wheat">اضافه کردن قسمت</h6>
+            </div>
+            <div class="mb-2">
+              <% let flag = false %> <% if(errors.length > 0) { %> <% flag =
+              true %>
+              <h6 class="h3 tar">خطا</h6>
+              <p class="text-muted mb-0 tar">
+                <% errors.forEach(error => { %> <%= error %><br />
+                <% }) %>
+              </p>
+              <% } %>
+            </div>
+            <span class="clearfix"></span>
+
+            <form
+              class="form-horizontal"
+              action="/admin/episodes/create"
+              method="post"
+              enctype="multipart/form-data"
+            >
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >عنوان قسمت</label
+                >
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i data-feather="book"></i
+                    ></span>
+                  </div>
+                  <input
+                    type="text"
+                    placeholder="عنوان قسمت را وارد کنید"
+                    name="title"
+                    id="title"
+                    value="<%= old('title') %>"
+                    class="form-control form-control-muted tar"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >دوره مربوطه</label
+                >
+                <div class="input-group">
+                  <% if(course) { %>
+                  <select
+                    class="custom-select form-control-muted"
+                    name="course"
+                    id="course"
+                  >
+                    <option value="<%= course._id %>">
+                    <%= course.title %></option>
+                </select>
+                <% } else { %>
+                <select
+                    class="custom-select form-control-muted"
+                    name="course"
+                    id="course"
+                  >
+                    <% courses.forEach(course => { %>
+                      <option value="<%= course._id %>" 
+                        <%= String(old('course')) == String(course._id) ? 'selected' : '' %>>
+                      <%= course.title %></option>
+                    <% }) %>
+                </select>
+                <% } %>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >ویدیو</label
+                >
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text"
+                      ><i data-feather="video"></i
+                    ></span>
+                  </div>
+                  <input
+                    value="<%= old('video') %>"
+                    class="form-control tal"
+                    type="file"
+                    accept="video/*"
+                    class="form-control form-control-muted"
+                    name="video"
+                    id="video"
+                    placeholder="ویدیو را وارد کنید"
+                  />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >وضعیت رایگان بودن</label
+                >
+                <div class="input-group">
+                  <select
+                    class="custom-select form-control-muted"
+                    name="isFree"
+                    id="isFree"
+                  >
+                    <option value="notfree">فروشی</option>
+                    <option value="free">رایگان</option>
+                </select>
+                </div>
+              </div>
+
+
+              <div class="form-group">
+                <label class="form-control-label wheat tar w100 mb-4"
+                  >خلاصه</label
+                >
+                <div class="input-group">
+                  <textarea
+                    name="body"
+                    id="body"
+                    placeholder="خلاصه را وارد کنید"
+                    class="form-control tar"
+                    rows="3"
+                  >
+                      <%= old('body') %></textarea
+                  >
+                </div>
+              </div>
+
+              <div class="mt-4">
+                <button type="submit" class="btn btn-block btn-primary">
+                  ثبت
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
